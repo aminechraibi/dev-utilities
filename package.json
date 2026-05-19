@@ -1,7 +1,7 @@
 {
   "name": "dev-utilities",
   "type": "module",
-  "version": "2024.10.22-7ca5933",
+  "version": "2026.05.19",
   "packageManager": "pnpm@9.11.0",
   "description": "A free, open-source collection of powerful online tools for developers and IT professionals",
   "author": "aminechraibi <aminechrabii@gmail.com> (https://github.com/aminechraibi)",
