@@ -1,0 +1,18 @@
+Dev Utilities
+Copyright (C) 2024-2026 Amine Chraibi (aminechraibi)
+
+This project is based on IT Tools (https://github.com/CorentinTh/it-tools)
+Copyright (C) 2022-2024 Corentin Thomasset (CorentinTh)
+
+Licensed under the GNU General Public License v3.0 (GPLv3).
+See the LICENSE file for the full license text.
+
+Modifications made by Amine Chraibi include:
+- Full visual rebrand (blue-and-white theme, new branding "Dev Utilities")
+- Replacement of all green colors with blue variants throughout UI and SVG assets
+- Addition of 20+ new developer tools
+- Removal of sponsor banners, X/Twitter links, About page, and UI component library route
+- GitHub Pages deployment workflow
+- Ko-fi support button integration
+- Updated PWA manifest, metadata, and i18n strings
+- Dev-only visibility of "Newest tools" section and "isNew" badges
