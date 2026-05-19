@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './exif-viewer.service';
-//
-// describe('exif-viewer', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('exif-viewer', () => {
+  it.todo('add tests');
+});

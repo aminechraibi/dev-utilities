@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './json-path-tester.service';
-//
-// describe('json-path-tester', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('json-path-tester', () => {
+  it.todo('add tests');
+});

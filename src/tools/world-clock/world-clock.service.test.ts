@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './world-clock.service';
-//
-// describe('world-clock', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('world-clock', () => {
+  it.todo('add tests');
+});

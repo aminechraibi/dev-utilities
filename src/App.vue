@@ -11,11 +11,15 @@ const router = useRouter();
 const isNavigating = ref(false);
 let navTimer: ReturnType<typeof setTimeout> | null = null;
 router.beforeEach(() => {
-  if (navTimer) clearTimeout(navTimer);
+  if (navTimer) {
+    clearTimeout(navTimer);
+  }
   isNavigating.value = true;
 });
 router.afterEach(() => {
-  navTimer = setTimeout(() => { isNavigating.value = false; }, 180);
+  navTimer = setTimeout(() => {
+    isNavigating.value = false;
+  }, 180);
 });
 const layout = computed(() => route?.meta?.layout ?? layouts.base);
 const styleStore = useStyleStore();

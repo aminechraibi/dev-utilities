@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './fake-data-generator.service';
-//
-// describe('fake-data-generator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('fake-data-generator', () => {
+  it.todo('add tests');
+});

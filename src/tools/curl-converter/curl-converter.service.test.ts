@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './curl-converter.service';
-//
-// describe('curl-converter', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('curl-converter', () => {
+  it.todo('add tests');
+});

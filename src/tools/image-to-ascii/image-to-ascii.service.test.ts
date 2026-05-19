@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './image-to-ascii.service';
-//
-// describe('image-to-ascii', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('image-to-ascii', () => {
+  it.todo('add tests');
+});

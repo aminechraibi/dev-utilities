@@ -9,7 +9,7 @@ test.describe('Tool - Binary calculator', () => {
     await expect(page).toHaveTitle('Binary calculator - IT Tools');
   });
 
-  test('', async ({ page }) => {
+  test('', async ({ page: _page }) => {
 
   });
 });

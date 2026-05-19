@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './uuid-inspector.service';
-//
-// describe('uuid-inspector', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('uuid-inspector', () => {
+  it.todo('add tests');
+});

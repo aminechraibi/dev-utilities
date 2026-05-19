@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './barcode-generator.service';
-//
-// describe('barcode-generator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('barcode-generator', () => {
+  it.todo('add tests');
+});

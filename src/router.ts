@@ -25,9 +25,9 @@ const router = createRouter({
       name: 'home',
       component: HomePage,
     },
-...toolsRoutes,
+    ...toolsRoutes,
     ...toolsRedirectRoutes,
-{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
 });
 

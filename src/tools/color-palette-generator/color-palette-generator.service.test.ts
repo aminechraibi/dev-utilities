@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './color-palette-generator.service';
-//
-// describe('color-palette-generator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('color-palette-generator', () => {
+  it.todo('add tests');
+});

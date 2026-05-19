@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './http-request-builder.service';
-//
-// describe('http-request-builder', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('http-request-builder', () => {
+  it.todo('add tests');
+});

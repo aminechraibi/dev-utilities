@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './html-minifier.service';
-//
-// describe('html-minifier', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('html-minifier', () => {
+  it.todo('add tests');
+});

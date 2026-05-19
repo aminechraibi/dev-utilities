@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './statistics-calculator.service';
-//
-// describe('statistics-calculator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('statistics-calculator', () => {
+  it.todo('add tests');
+});

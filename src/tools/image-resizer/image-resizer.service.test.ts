@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './image-resizer.service';
-//
-// describe('image-resizer', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('image-resizer', () => {
+  it.todo('add tests');
+});

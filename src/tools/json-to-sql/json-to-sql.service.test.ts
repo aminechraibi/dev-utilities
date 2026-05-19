@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './json-to-sql.service';
-//
-// describe('json-to-sql', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('json-to-sql', () => {
+  it.todo('add tests');
+});

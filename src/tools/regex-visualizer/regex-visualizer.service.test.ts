@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './regex-visualizer.service';
-//
-// describe('regex-visualizer', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('regex-visualizer', () => {
+  it.todo('add tests');
+});

@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './pdf-to-text.service';
-//
-// describe('pdf-to-text', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('pdf-to-text', () => {
+  it.todo('add tests');
+});

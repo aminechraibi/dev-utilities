@@ -13,10 +13,14 @@ const fontImporters = import.meta.glob('/node_modules/figlet/importable-fonts/*.
 const fontCache = new Set<string>();
 
 async function loadFont(name: string): Promise<void> {
-  if (fontCache.has(name)) return;
+  if (fontCache.has(name)) {
+    return;
+  }
   const key = `/node_modules/figlet/importable-fonts/${name}.js`;
   const loader = fontImporters[key];
-  if (!loader) throw new Error(`Font not found: ${name}`);
+  if (!loader) {
+    throw new Error(`Font not found: ${name}`);
+  }
   const data = await loader() as string;
   figlet.parseFont(name, data);
   fontCache.add(name);

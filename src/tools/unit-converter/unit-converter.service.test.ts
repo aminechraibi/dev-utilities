@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './unit-converter.service';
-//
-// describe('unit-converter', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('unit-converter', () => {
+  it.todo('add tests');
+});

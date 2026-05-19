@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './cron-expression-parser.service';
-//
-// describe('cron-expression-parser', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('cron-expression-parser', () => {
+  it.todo('add tests');
+});

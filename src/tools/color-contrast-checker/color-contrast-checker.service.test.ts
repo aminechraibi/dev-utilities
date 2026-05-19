@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './color-contrast-checker.service';
-//
-// describe('color-contrast-checker', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('color-contrast-checker', () => {
+  it.todo('add tests');
+});

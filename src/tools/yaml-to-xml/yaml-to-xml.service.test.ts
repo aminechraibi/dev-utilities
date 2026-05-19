@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './yaml-to-xml.service';
-//
-// describe('yaml-to-xml', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('yaml-to-xml', () => {
+  it.todo('add tests');
+});

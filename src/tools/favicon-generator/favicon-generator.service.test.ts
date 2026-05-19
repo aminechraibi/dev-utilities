@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './favicon-generator.service';
-//
-// describe('favicon-generator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('favicon-generator', () => {
+  it.todo('add tests');
+});

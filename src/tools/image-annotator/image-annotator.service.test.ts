@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './image-annotator.service';
-//
-// describe('image-annotator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('image-annotator', () => {
+  it.todo('add tests');
+});

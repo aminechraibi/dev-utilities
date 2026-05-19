@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './graphql-formatter.service';
-//
-// describe('graphql-formatter', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('graphql-formatter', () => {
+  it.todo('add tests');
+});

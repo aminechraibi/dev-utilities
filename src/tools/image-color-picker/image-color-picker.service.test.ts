@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './image-color-picker.service';
-//
-// describe('image-color-picker', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('image-color-picker', () => {
+  it.todo('add tests');
+});

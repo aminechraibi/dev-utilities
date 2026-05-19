@@ -9,7 +9,7 @@ test.describe('Tool - Base32 encoder', () => {
     await expect(page).toHaveTitle('Base32 encoder - IT Tools');
   });
 
-  test('', async ({ page }) => {
+  test('', async ({ page: _page }) => {
 
   });
 });

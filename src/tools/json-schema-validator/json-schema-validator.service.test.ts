@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './json-schema-validator.service';
-//
-// describe('json-schema-validator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('json-schema-validator', () => {
+  it.todo('add tests');
+});

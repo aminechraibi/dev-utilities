@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './semver-comparator.service';
-//
-// describe('semver-comparator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('semver-comparator', () => {
+  it.todo('add tests');
+});

@@ -9,7 +9,7 @@ test.describe('Tool - Barcode generator', () => {
     await expect(page).toHaveTitle('Barcode generator - IT Tools');
   });
 
-  test('', async ({ page }) => {
+  test('', async ({ page: _page }) => {
 
   });
 });

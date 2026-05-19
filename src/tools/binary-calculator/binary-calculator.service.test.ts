@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './binary-calculator.service';
-//
-// describe('binary-calculator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('binary-calculator', () => {
+  it.todo('add tests');
+});

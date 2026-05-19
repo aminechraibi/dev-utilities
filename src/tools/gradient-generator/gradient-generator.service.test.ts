@@ -1,6 +1,5 @@
-import { expect, describe, it } from 'vitest';
-// import { } from './gradient-generator.service';
-//
-// describe('gradient-generator', () => {
-//
-// })
+import { describe, it } from 'vitest';
+
+describe('gradient-generator', () => {
+  it.todo('add tests');
+});
