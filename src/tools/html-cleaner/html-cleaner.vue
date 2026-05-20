@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useCopy } from '@/composable/copy';
+import { computed, ref } from 'vue';
 import { cleanHtml, defaultOptions } from './html-cleaner.service';
 import type { CleanOptions } from './html-cleaner.service';
+import { useCopy } from '@/composable/copy';
 
 const input = ref(`<div id="main" class="container" style="color: red;">
   <!-- page header -->
@@ -68,25 +68,24 @@ const options: { key: keyof CleanOptions; label: string }[] = [
       <c-card title="HTML Input" class="editor-card">
         <c-input-text
           v-model:value="input"
-          multiline
+
           :rows="22"
           placeholder="Paste your HTML here..."
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
         />
       </c-card>
 
       <c-card title="Cleaned Output" class="editor-card">
         <c-input-text
           :value="output"
-          multiline
+
           :rows="22"
           placeholder="Cleaned HTML will appear here..."
-          font-mono
-          readonly
-          raw-text
+
+          multiline readonly raw-text font-mono
         />
-        <div flex justify-end mt-2>
+        <div mt-2 flex justify-end>
           <c-button size="small" @click="copy()">
             Copy
           </c-button>

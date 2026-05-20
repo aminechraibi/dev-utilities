@@ -137,9 +137,13 @@ export function cleanHtml(html: string, opts: CleanOptions): string {
       const isClose = /^<\//.test(trimmed);
       const isSelfClose = /\/>$/.test(trimmed) || /^<(br|hr|img|input|meta|link)\b/i.test(trimmed);
       const isOpen = /^<[^/]/.test(trimmed) && !isSelfClose;
-      if (isClose) indent = Math.max(0, indent - 1);
+      if (isClose) {
+        indent = Math.max(0, indent - 1);
+      }
       indented.push('  '.repeat(indent) + trimmed);
-      if (isOpen && !isClose) indent++;
+      if (isOpen && !isClose) {
+        indent++;
+      }
     }
     out = indented.join('\n');
   }

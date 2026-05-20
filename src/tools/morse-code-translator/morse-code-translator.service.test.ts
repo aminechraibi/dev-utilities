@@ -1,5 +1,5 @@
-import { expect, describe, it } from 'vitest';
-import { textToMorse, morseToText } from './morse-code-translator.service';
+import { describe, expect, it } from 'vitest';
+import { morseToText, textToMorse } from './morse-code-translator.service';
 
 describe('morse-code-translator', () => {
   describe('textToMorse', () => {

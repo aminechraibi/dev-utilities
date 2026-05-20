@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
-import { useCopy } from '@/composable/copy';
+import { computed, nextTick, ref } from 'vue';
 import { rgbToHex, rgbToHsl } from './image-color-picker.service';
+import { useCopy } from '@/composable/copy';
 import CloseIcon from '~icons/mdi/close';
 import ImageIcon from '~icons/mdi/image-outline';
 
@@ -74,7 +74,9 @@ function getCanvasCoords(e: MouseEvent) {
 
 function getPixelColor(x: number, y: number): PickedColor | null {
   const canvas = canvasRef.value;
-  if (!canvas) return null;
+  if (!canvas) {
+    return null;
+  }
   const d = canvas.getContext('2d')!.getImageData(x, y, 1, 1).data;
   return { r: d[0], g: d[1], b: d[2], hex: rgbToHex(d[0], d[1], d[2]) };
 }
@@ -82,7 +84,9 @@ function getPixelColor(x: number, y: number): PickedColor | null {
 function drawMagnifier(x: number, y: number) {
   const mag = magnifierRef.value;
   const canvas = canvasRef.value;
-  if (!mag || !canvas) return;
+  if (!mag || !canvas) {
+    return;
+  }
   const srcSize = Math.floor(MAG_SIZE / MAG_ZOOM);
   const sx = Math.max(0, x - Math.floor(srcSize / 2));
   const sy = Math.max(0, y - Math.floor(srcSize / 2));
@@ -109,7 +113,9 @@ function drawMagnifier(x: number, y: number) {
 }
 
 function onMouseMove(e: MouseEvent) {
-  if (!imageLoaded.value) return;
+  if (!imageLoaded.value) {
+    return;
+  }
   const { x, y } = getCanvasCoords(e);
   hoveredColor.value = getPixelColor(x, y);
   drawMagnifier(x, y);
@@ -120,7 +126,9 @@ function onMouseLeave() {
 }
 
 function onCanvasClick(e: MouseEvent) {
-  if (!imageLoaded.value) return;
+  if (!imageLoaded.value) {
+    return;
+  }
   const { x, y } = getCanvasCoords(e);
   const color = getPixelColor(x, y);
   if (color) {
@@ -146,11 +154,11 @@ const displayColor = computed(() => hoveredColor.value ?? selectedHistory.value)
     <template v-else>
       <!-- Top bar -->
       <div class="image-bar">
-        <image-icon class="bar-icon" />
+        <ImageIcon class="bar-icon" />
         <span class="image-name" :title="fileName">{{ fileName }}</span>
         <span class="bar-hint">Hover to inspect · Click to pick color</span>
         <button class="reset-btn" title="Load a different image" @click="reset">
-          <close-icon />
+          <CloseIcon />
         </button>
       </div>
 
@@ -194,7 +202,9 @@ const displayColor = computed(() => hoveredColor.value ?? selectedHistory.value)
                 Move cursor<br>over image
               </div>
             </div>
-            <div class="mag-zoom-label">×{{ MAG_ZOOM }} zoom</div>
+            <div class="mag-zoom-label">
+              ×{{ MAG_ZOOM }} zoom
+            </div>
           </div>
 
           <!-- Color panel — always rendered, fixed min-height prevents reflow -->
@@ -203,8 +213,12 @@ const displayColor = computed(() => hoveredColor.value ?? selectedHistory.value)
               <div class="color-header">
                 <div class="color-swatch" :style="{ background: displayColor.hex }" />
                 <div>
-                  <div class="color-hex">{{ displayColor.hex }}</div>
-                  <div class="color-sub">{{ hoveredColor ? 'Hover — click to save' : 'From history' }}</div>
+                  <div class="color-hex">
+                    {{ displayColor.hex }}
+                  </div>
+                  <div class="color-sub">
+                    {{ hoveredColor ? 'Hover — click to save' : 'From history' }}
+                  </div>
                 </div>
               </div>
               <div class="fmt-list">

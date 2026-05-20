@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { type JwtAlgorithm, generateJwt } from './jwt-generator.service';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useCopy } from '@/composable/copy';
-import { generateJwt, type JwtAlgorithm } from './jwt-generator.service';
 
 const DEFAULT_HEADER = JSON.stringify({ alg: 'HS256', typ: 'JWT' }, null, 2);
 const DEFAULT_PAYLOAD = JSON.stringify(
@@ -109,7 +109,7 @@ const { copy } = useCopy({ source: jwt, text: 'JWT copied to clipboard' });
         font-mono
         placeholder="JWT will appear here..."
       />
-      <div flex justify-center mt-3>
+      <div mt-3 flex justify-center>
         <c-button :disabled="!jwt" @click="copy()">
           Copy JWT
         </c-button>

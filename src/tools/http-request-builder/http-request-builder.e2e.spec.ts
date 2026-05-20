@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Tool - Http request builder', () => {
   test.beforeEach(async ({ page }) => {

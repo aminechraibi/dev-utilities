@@ -1,21 +1,21 @@
 import forge from 'node-forge';
 
 export interface CertificateInfo {
-  subject: Record<string, string>;
-  issuer: Record<string, string>;
-  serialNumber: string;
-  validFrom: string;
-  validTo: string;
-  signatureAlgorithm: string;
-  publicKeyAlgorithm: string;
-  publicKeyBits: number;
-  subjectAltNames: string[];
+  subject: Record<string, string>
+  issuer: Record<string, string>
+  serialNumber: string
+  validFrom: string
+  validTo: string
+  signatureAlgorithm: string
+  publicKeyAlgorithm: string
+  publicKeyBits: number
+  subjectAltNames: string[]
   fingerprint: {
-    sha1: string;
-    sha256: string;
-  };
-  isCA: boolean;
-  version: number;
+    sha1: string
+    sha256: string
+  }
+  isCA: boolean
+  version: number
 }
 
 function rdnToRecord(rdnSet: forge.pki.CertificateField[]): Record<string, string> {

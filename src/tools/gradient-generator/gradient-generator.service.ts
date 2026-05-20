@@ -1,6 +1,6 @@
 export interface ColorStop {
-  color: string;
-  position: number;
+  color: string
+  position: number
 }
 
 export function generateGradientCss(

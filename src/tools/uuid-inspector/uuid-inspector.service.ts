@@ -1,15 +1,21 @@
 export interface UuidInspectResult {
-  version: number | null;
-  variant: string;
-  info: Record<string, string>;
+  version: number | null
+  variant: string
+  info: Record<string, string>
 }
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function getVariant(byte: number): string {
-  if ((byte & 0x80) === 0x00) return 'NCS backward compatibility (0xx)';
-  if ((byte & 0xc0) === 0x80) return 'RFC 4122 / DCE 1.1 (10x)';
-  if ((byte & 0xe0) === 0xc0) return 'Microsoft backward compatibility (110)';
+  if ((byte & 0x80) === 0x00) {
+    return 'NCS backward compatibility (0xx)';
+  }
+  if ((byte & 0xC0) === 0x80) {
+    return 'RFC 4122 / DCE 1.1 (10x)';
+  }
+  if ((byte & 0xE0) === 0xC0) {
+    return 'Microsoft backward compatibility (110)';
+  }
   return 'Reserved (111)';
 }
 
@@ -17,7 +23,9 @@ function getVersion(hex: string): number | null {
   // version nibble is the first character of the 3rd group (index 14 in clean hex)
   const clean = hex.replace(/-/g, '');
   const versionNibble = Number.parseInt(clean[12], 16);
-  if (versionNibble >= 1 && versionNibble <= 8) return versionNibble;
+  if (versionNibble >= 1 && versionNibble <= 8) {
+    return versionNibble;
+  }
   return null;
 }
 
@@ -30,7 +38,7 @@ function decodeV1Timestamp(hex: string): string {
   const timeHiAndVersion = clean.slice(12, 16);
 
   // Strip version nibble from timeHi
-  const timeHi = (Number.parseInt(timeHiAndVersion, 16) & 0x0fff).toString(16).padStart(3, '0');
+  const timeHi = (Number.parseInt(timeHiAndVersion, 16) & 0x0FFF).toString(16).padStart(3, '0');
   const fullTimestamp = timeHi + timeMid + timeLow;
   const intervalsBig = BigInt(`0x${fullTimestamp}`);
 
@@ -69,19 +77,19 @@ export function inspectUuid(uuid: string): UuidInspectResult {
   if (version === 1) {
     try {
       const timestamp = decodeV1Timestamp(uuid);
-      info['Timestamp'] = timestamp;
+      info.Timestamp = timestamp;
     }
     catch {
-      info['Timestamp'] = 'Could not decode';
+      info.Timestamp = 'Could not decode';
     }
 
     // Clock sequence: bits 62-79 excluding variant bits
-    const clockSeqHi = Number.parseInt(clean[16], 16) & 0x3f;
+    const clockSeqHi = Number.parseInt(clean[16], 16) & 0x3F;
     const clockSeqLow = Number.parseInt(clean[17], 16) * 16 + Number.parseInt(clean[18], 16);
     // Actually clock seq is 14 bits: clkseq_hi_res (6 bits) | clkseq_low (8 bits)
-    const clockSeqHiRes = (variantByte & 0x3f) >> 0;
+    const clockSeqHiRes = (variantByte & 0x3F) >> 0;
     const clockSeqLowByte = Number.parseInt(clean[18], 16) * 16 + Number.parseInt(clean[19], 16);
-    const clockSeq = ((variantByte & 0x3f) << 8) | clockSeqLowByte;
+    const clockSeq = ((variantByte & 0x3F) << 8) | clockSeqLowByte;
     info['Clock Sequence'] = String(clockSeq);
 
     // Node: last 6 bytes (12 hex chars)
@@ -92,7 +100,7 @@ export function inspectUuid(uuid: string): UuidInspectResult {
     info['Node Type'] = isMulticast ? 'Random/Multicast' : 'Unicast (real MAC)';
   }
   else if (version === 4) {
-    info['Generation'] = 'Random';
+    info.Generation = 'Random';
     info['Random bits'] = '122 bits of randomness';
   }
   else if (version === 7) {
@@ -103,15 +111,15 @@ export function inspectUuid(uuid: string): UuidInspectResult {
       info['Unix Milliseconds'] = String(ms);
     }
     catch {
-      info['Timestamp'] = 'Could not decode';
+      info.Timestamp = 'Could not decode';
     }
     info['Random bits'] = '74 bits of randomness';
   }
   else if (version === 3) {
-    info['Hashing'] = 'MD5 of namespace + name';
+    info.Hashing = 'MD5 of namespace + name';
   }
   else if (version === 5) {
-    info['Hashing'] = 'SHA-1 of namespace + name';
+    info.Hashing = 'SHA-1 of namespace + name';
   }
 
   return { version, variant, info };

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { useCopy } from '@/composable/copy';
 import { csvToJson } from './csv-to-json.service';
+import { useCopy } from '@/composable/copy';
 
 const csvInput = useStorage('csv-to-json:input', 'name,age,city\nAlice,30,Paris\nBob,25,London\nCharlie,35,New York');
 const delimiter = useStorage<string>('csv-to-json:delimiter', ',');
@@ -29,7 +29,7 @@ const { copy } = useCopy({ source: jsonOutput, text: 'JSON copied to clipboard' 
 <template>
   <div flex flex-col gap-3>
     <c-card title="CSV Input">
-      <div flex gap-3 mb-3 flex-wrap items-center>
+      <div mb-3 flex flex-wrap items-center gap-3>
         <div flex items-center gap-2>
           <span text-sm op-70>Delimiter:</span>
           <c-select
@@ -44,25 +44,24 @@ const { copy } = useCopy({ source: jsonOutput, text: 'JSON copied to clipboard' 
       </div>
       <c-input-text
         v-model:value="csvInput"
-        multiline
+
         :rows="10"
         placeholder="Paste your CSV data here..."
-        font-mono
-        raw-text
+
+        multiline raw-text font-mono
       />
     </c-card>
 
     <c-card title="JSON Output">
       <c-input-text
         :value="jsonOutput"
-        multiline
+
         :rows="12"
-        readonly
-        font-mono
-        raw-text
+
+        multiline readonly raw-text font-mono
         placeholder="JSON output will appear here..."
       />
-      <div flex justify-center mt-3>
+      <div mt-3 flex justify-center>
         <c-button :disabled="!jsonOutput" @click="copy()">
           Copy JSON
         </c-button>

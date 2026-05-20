@@ -1,5 +1,5 @@
 export interface FormatOptions {
-  indentSize: number;
+  indentSize: number
 }
 
 export function formatJavaScript(code: string, options: FormatOptions): string {
@@ -125,7 +125,9 @@ export function formatJavaScript(code: string, options: FormatOptions): string {
       currentLine = '}';
       // Check if followed by ; or else
       let j = i + 1;
-      while (j < chars.length && (chars[j] === ' ' || chars[j] === '\t')) j++;
+      while (j < chars.length && (chars[j] === ' ' || chars[j] === '\t')) {
+        j++;
+      }
       if (chars[j] === ';') {
         currentLine += ';';
         i = j + 1;

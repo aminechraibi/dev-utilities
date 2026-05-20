@@ -30,7 +30,9 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 }
 
 async function render() {
-  if (!file.value) return;
+  if (!file.value) {
+    return;
+  }
   processing.value = true;
   const url = URL.createObjectURL(file.value);
   try {
@@ -75,7 +77,9 @@ async function render() {
 }
 
 function onFiles(f: File) {
-  if (!f) return;
+  if (!f) {
+    return;
+  }
   file.value = f;
   const img = new Image();
   const url = URL.createObjectURL(f);
@@ -89,7 +93,9 @@ function onFiles(f: File) {
 }
 
 function download() {
-  if (!preview.value) return;
+  if (!preview.value) {
+    return;
+  }
   const a = document.createElement('a');
   const name = file.value?.name.replace(/\.[^.]+$/, '') ?? 'resized';
   a.download = `${name}-${targetW.value}x${targetH.value}.${outputFormat.value === 'jpeg' ? 'jpg' : outputFormat.value}`;
@@ -122,7 +128,7 @@ function download() {
           <n-input-number v-model:value="targetH" :min="1" :max="8000" w-full />
         </div>
 
-        <div flex items-center gap-2 mb-3>
+        <div mb-3 flex items-center gap-2>
           <n-switch v-model:value="keepAspect" size="small" />
           <span text-sm>Fit image (letterbox)</span>
         </div>
@@ -146,7 +152,7 @@ function download() {
           <n-slider v-model:value="quality" :min="10" :max="100" :step="1" />
         </div>
 
-        <div flex gap-2 mt-2>
+        <div mt-2 flex gap-2>
           <c-button :disabled="!file" flex-1 @click="render">
             Resize
           </c-button>
@@ -167,7 +173,7 @@ function download() {
           </div>
           <img :src="preview" class="preview-img" alt="Preview">
         </div>
-        <div v-else flex items-center justify-center p-8 op-30 text-sm>
+        <div v-else flex items-center justify-center p-8 text-sm op-30>
           Upload an image to preview
         </div>
       </c-card>

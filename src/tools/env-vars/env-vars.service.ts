@@ -59,7 +59,7 @@ export const shells: Shell[] = [
     label: '.env file',
     os: 'All',
     setCmd: (k, v) => `${k}=${v}`,
-    unsetCmd: _ => `# remove the line`,
+    unsetCmd: _ => '# remove the line',
     allCmd: vars => vars.map(v => `${v.key}=${v.value}`).join('\n'),
   },
 ];

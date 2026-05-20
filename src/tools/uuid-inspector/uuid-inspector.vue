@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { type UuidInspectResult, inspectUuid } from './uuid-inspector.service';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
-import { inspectUuid, type UuidInspectResult } from './uuid-inspector.service';
 
 const uuidInput = ref('');
 
@@ -14,7 +14,9 @@ const validation = useValidation({
   rules: [
     {
       validator: (value) => {
-        if (!value.trim()) return true;
+        if (!value.trim()) {
+          return true;
+        }
         try {
           inspectUuid(value.trim());
           return true;
@@ -37,8 +39,8 @@ const validation = useValidation({
         label="UUID to inspect"
         :validation="validation"
         placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
-        font-mono
-        autofocus
+
+        autofocus font-mono
       />
     </c-card>
 

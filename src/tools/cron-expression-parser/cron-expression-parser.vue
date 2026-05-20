@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { isCronValid, parseCronExpression } from './cron-expression-parser.service';
 import { withDefaultOnError } from '@/utils/defaults';
-import { parseCronExpression, isCronValid } from './cron-expression-parser.service';
 
 const cronInput = ref('0 9 * * 1-5');
 
@@ -19,14 +19,20 @@ const isValid = computed(() => isCronValid(cronInput.value));
 
 const parseResult = computed(() =>
   withDefaultOnError(() => {
-    if (!isValid.value) return null;
+    if (!isValid.value) {
+      return null;
+    }
     return parseCronExpression(cronInput.value);
   }, null),
 );
 
 const parseError = computed(() => {
-  if (!cronInput.value.trim()) return null;
-  if (isValid.value) return null;
+  if (!cronInput.value.trim()) {
+    return null;
+  }
+  if (isValid.value) {
+    return null;
+  }
   try {
     parseCronExpression(cronInput.value);
     return null;
@@ -59,8 +65,8 @@ function formatDate(date: Date): string {
 
 <template>
   <c-card title="Cron Expression">
-    <div flex gap-2 mb-3 style="flex-wrap: wrap">
-      <span text-sm op-70 self-center>Examples:</span>
+    <div mb-3 flex gap-2 style="flex-wrap: wrap">
+      <span self-center text-sm op-70>Examples:</span>
       <c-button
         v-for="ex in examples"
         :key="ex.value"
@@ -75,11 +81,11 @@ function formatDate(date: Date): string {
       v-model:value="cronInput"
       placeholder="* * * * *"
       :validation-rules="validationRules"
-      font-mono
-      mb-3
+
+      mb-3 font-mono
     />
 
-    <pre op-50 text-xs style="overflow: auto; padding: 8px 0; line-height: 1.6">
+    <pre text-xs op-50 style="overflow: auto; padding: 8px 0; line-height: 1.6">
 ┌─────────── minute (0 - 59)
 │ ┌─────────── hour (0 - 23)
 │ │ ┌─────────── day of month (1 - 31)
@@ -90,7 +96,7 @@ function formatDate(date: Date): string {
   </c-card>
 
   <c-card v-if="parseResult" title="Human-readable Description">
-    <div text-xl text-center py-2 style="font-weight: 500">
+    <div py-2 text-center text-xl style="font-weight: 500">
       {{ parseResult.description }}
     </div>
   </c-card>
@@ -103,11 +109,8 @@ function formatDate(date: Date): string {
     <div
       v-for="(run, index) in parseResult.nextRuns"
       :key="index"
-      flex
-      items-center
-      gap-3
-      mb-2
-      p-2
+
+      mb-2 flex items-center gap-3 p-2
       style="border-radius: 6px; background: rgba(128,128,128,0.05)"
     >
       <n-tag type="info" size="small" style="min-width: 28px; justify-content: center">

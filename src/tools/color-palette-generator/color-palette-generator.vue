@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useClipboard } from '@vueuse/core';
-import { generatePalettes, hexToHsl, hexToRgb, hexToHsb, hexToCmyk } from './color-palette-generator.service';
+import { computed, ref } from 'vue';
+import { generatePalettes, hexToCmyk, hexToHsb, hexToHsl, hexToRgb } from './color-palette-generator.service';
+import { useCopy } from '@/composable/copy';
 
 type CopyFormat = 'hex' | 'rgb' | 'hsl' | 'hsb' | 'cmyk';
 
 const seedColor = ref('#3b82f6');
 const copyFormat = ref<CopyFormat>('hex');
-const { copy } = useClipboard();
+const { copy } = useCopy({ createToast: false });
 const copiedKey = ref('');
 
 const palettes = computed(() => generatePalettes(seedColor.value));
@@ -43,7 +43,9 @@ async function copyColor(hex: string) {
   const val = getColorValue(hex);
   await copy(val);
   copiedKey.value = `${hex}-${copyFormat.value}`;
-  setTimeout(() => { copiedKey.value = ''; }, 1400);
+  setTimeout(() => {
+    copiedKey.value = '';
+  }, 1400);
 }
 
 function isCopied(hex: string) {
@@ -51,9 +53,9 @@ function isCopied(hex: string) {
 }
 
 function textColor(hex: string): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
+  const r = Number.parseInt(hex.slice(1, 3), 16);
+  const g = Number.parseInt(hex.slice(3, 5), 16);
+  const b = Number.parseInt(hex.slice(5, 7), 16);
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? '#000000cc' : '#ffffffcc';
 }
 </script>
@@ -64,8 +66,10 @@ function textColor(hex: string): string {
     <div class="controls-bar">
       <!-- Color input -->
       <div class="control-group">
-        <div class="control-label">Seed Color</div>
-        <div flex gap-2 items-center>
+        <div class="control-label">
+          Seed Color
+        </div>
+        <div flex items-center gap-2>
           <input
             v-model="seedColor"
             type="color"
@@ -83,7 +87,9 @@ function textColor(hex: string): string {
 
       <!-- Format radio -->
       <div class="control-group">
-        <div class="control-label">Copy Format</div>
+        <div class="control-label">
+          Copy Format
+        </div>
         <div class="format-radios">
           <label
             v-for="opt in formatOptions"

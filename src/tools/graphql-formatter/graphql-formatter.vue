@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { formatGraphql } from './graphql-formatter.service';
 import { useCopy } from '@/composable/copy';
 import { withDefaultOnError } from '@/utils/defaults';
-import { formatGraphql } from './graphql-formatter.service';
 
 const inputQuery = ref(`query GetUser($id: ID!) {
 user(id: $id) {
@@ -20,7 +20,9 @@ const formattedQuery = computed(() =>
 );
 
 const formatError = computed(() => {
-  if (!inputQuery.value.trim()) return null;
+  if (!inputQuery.value.trim()) {
+    return null;
+  }
   try {
     formatGraphql(inputQuery.value);
     return null;
@@ -35,19 +37,19 @@ const { copy } = useCopy({ source: formattedQuery, text: 'Formatted GraphQL copi
 const examples = [
   {
     label: 'Query',
-    value: `query GetUser($id: ID!) {\nuser(id: $id) {\nid\nname\nemail\nposts {\nid\ntitle\n}\n}\n}`,
+    value: 'query GetUser($id: ID!) {\nuser(id: $id) {\nid\nname\nemail\nposts {\nid\ntitle\n}\n}\n}',
   },
   {
     label: 'Mutation',
-    value: `mutation CreatePost($input: PostInput!) {\ncreatePost(input: $input) {\nid\ntitle\nauthor {\nid\nname\n}\n}\n}`,
+    value: 'mutation CreatePost($input: PostInput!) {\ncreatePost(input: $input) {\nid\ntitle\nauthor {\nid\nname\n}\n}\n}',
   },
   {
     label: 'Fragment',
-    value: `fragment UserFields on User {\nid\nname\nemail\n}\n\nquery GetUsers {\nusers {\n...UserFields\nposts {\nid\ntitle\n}\n}\n}`,
+    value: 'fragment UserFields on User {\nid\nname\nemail\n}\n\nquery GetUsers {\nusers {\n...UserFields\nposts {\nid\ntitle\n}\n}\n}',
   },
   {
     label: 'Subscription',
-    value: `subscription OnMessageAdded($roomId: ID!) {\nmessageAdded(roomId: $roomId) {\nid\ncontent\nauthor {\nname\n}\n}\n}`,
+    value: 'subscription OnMessageAdded($roomId: ID!) {\nmessageAdded(roomId: $roomId) {\nid\ncontent\nauthor {\nname\n}\n}\n}',
   },
 ];
 </script>
@@ -55,7 +57,7 @@ const examples = [
 <template>
   <div class="gql-root">
     <div flex gap-2 style="flex-wrap: wrap">
-      <span text-sm op-70 mr-1 self-center>Examples:</span>
+      <span mr-1 self-center text-sm op-70>Examples:</span>
       <c-button
         v-for="ex in examples"
         :key="ex.label"
@@ -70,23 +72,22 @@ const examples = [
       <c-card title="GraphQL Input" class="editor-card">
         <c-input-text
           v-model:value="inputQuery"
-          multiline
+
           :rows="20"
           placeholder="Paste your GraphQL query here..."
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
         />
       </c-card>
 
       <c-card title="Formatted Output" class="editor-card">
         <c-input-text
           :value="formattedQuery"
-          multiline
+
           :rows="20"
           placeholder="Formatted output will appear here..."
-          font-mono
-          readonly
-          raw-text
+
+          multiline readonly raw-text font-mono
         />
       </c-card>
     </div>

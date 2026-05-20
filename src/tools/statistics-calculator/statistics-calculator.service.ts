@@ -1,17 +1,17 @@
 export interface Stats {
-  count: number;
-  sum: number;
-  min: number;
-  max: number;
-  range: number;
-  mean: number;
-  median: number;
-  mode: number[];
-  variance: number;
-  stdDev: number;
-  q1: number;
-  q3: number;
-  iqr: number;
+  count: number
+  sum: number
+  min: number
+  max: number
+  range: number
+  mean: number
+  median: number
+  mode: number[]
+  variance: number
+  stdDev: number
+  q1: number
+  q3: number
+  iqr: number
 }
 
 export function parseNumbers(input: string): number[] {
@@ -20,11 +20,13 @@ export function parseNumbers(input: string): number[] {
     .map(s => s.trim())
     .filter(s => s !== '')
     .map(Number)
-    .filter(n => !isNaN(n));
+    .filter(n => !Number.isNaN(n));
 }
 
 export function calculateStatistics(numbers: number[]): Stats {
-  if (numbers.length === 0) throw new Error('No numbers provided');
+  if (numbers.length === 0) {
+    throw new Error('No numbers provided');
+  }
   const sorted = [...numbers].sort((a, b) => a - b);
   const n = numbers.length;
   const sum = numbers.reduce((a, b) => a + b, 0);
@@ -32,7 +34,9 @@ export function calculateStatistics(numbers: number[]): Stats {
   const median
     = n % 2 === 0 ? (sorted[n / 2 - 1]! + sorted[n / 2]!) / 2 : sorted[Math.floor(n / 2)]!;
   const freq: Record<number, number> = {};
-  numbers.forEach((x) => { freq[x] = (freq[x] ?? 0) + 1; });
+  numbers.forEach((x) => {
+    freq[x] = (freq[x] ?? 0) + 1;
+  });
   const maxFreq = Math.max(...Object.values(freq));
   const mode = Object.entries(freq)
     .filter(([, v]) => v === maxFreq)

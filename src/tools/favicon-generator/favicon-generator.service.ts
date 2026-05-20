@@ -1,8 +1,8 @@
 export interface FaviconOptions {
-  text: string;
-  bgColor: string;
-  textColor: string;
-  size: number;
+  text: string
+  bgColor: string
+  textColor: string
+  size: number
 }
 
 export function renderFaviconToCanvas(canvas: HTMLCanvasElement, options: FaviconOptions): void {

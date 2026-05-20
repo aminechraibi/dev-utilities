@@ -9,7 +9,9 @@ const error = ref('');
 const isValid = computed(() => isValidRegex(regexInput.value));
 
 const tokens = computed(() => {
-  if (!isValid.value || !regexInput.value) return [];
+  if (!isValid.value || !regexInput.value) {
+    return [];
+  }
   return tokenizeRegex(regexInput.value);
 });
 
@@ -36,13 +38,17 @@ watchEffect(async () => {
   const pattern = regexInput.value;
   error.value = '';
   const visualizer = visualizerSVG.value?.shadow_root;
-  if (!visualizer) return;
+  if (!visualizer) {
+    return;
+  }
 
   while (visualizer.lastChild) {
     visualizer.removeChild(visualizer.lastChild);
   }
 
-  if (!pattern) return;
+  if (!pattern) {
+    return;
+  }
 
   if (!isValidRegex(pattern)) {
     error.value = 'Invalid regular expression';
@@ -67,11 +73,11 @@ watchEffect(async () => {
         v-model:value="regexInput"
         label="Enter a regex pattern:"
         placeholder="e.g. ([a-z]+)\d{2,4}"
-        font-mono
-        mb-3
+
+        mb-3 font-mono
       />
-      <div flex gap-2 flex-wrap>
-        <span text-sm op-60 self-center>Examples:</span>
+      <div flex flex-wrap gap-2>
+        <span self-center text-sm op-60>Examples:</span>
         <c-button
           v-for="ex in examples"
           :key="ex.label"
@@ -96,7 +102,7 @@ watchEffect(async () => {
     </c-card>
 
     <c-card v-if="tokens.length > 0" title="Token breakdown">
-      <div flex gap-2 flex-wrap>
+      <div flex flex-wrap gap-2>
         <div
           v-for="(token, idx) in tokens"
           :key="idx"
@@ -104,18 +110,18 @@ watchEffect(async () => {
           style="min-width:60px;"
         >
           <div
-            font-mono text-sm px-2 py-1 rounded
+            rounded px-2 py-1 text-sm font-mono
             :style="`background:${tokenColors[token.type] ?? '#888'}22;border:1px solid ${tokenColors[token.type] ?? '#888'};color:${tokenColors[token.type] ?? '#888'}`"
           >
             {{ token.value }}
           </div>
-          <span text-xs op-60 text-center>{{ token.label }}</span>
+          <span text-center text-xs op-60>{{ token.label }}</span>
         </div>
       </div>
-      <div flex gap-3 flex-wrap mt-3 pt-3 style="border-top:1px solid #8882;">
+      <div mt-3 flex flex-wrap gap-3 pt-3 style="border-top:1px solid #8882;">
         <div v-for="(color, type) in tokenColors" :key="type" flex items-center gap-1>
           <div :style="`width:12px;height:12px;border-radius:3px;background:${color}`" />
-          <span text-xs op-70 capitalize>{{ type }}</span>
+          <span text-xs capitalize op-70>{{ type }}</span>
         </div>
       </div>
     </c-card>

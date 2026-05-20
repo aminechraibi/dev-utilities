@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useCopy } from '@/composable/copy';
 import { parseCurl, toAxios, toFetch, toNodeFetch, toPython } from './curl-converter.service';
+import { useCopy } from '@/composable/copy';
 
 const input = ref(`curl -X POST https://api.example.com/users \\
   -H "Content-Type: application/json" \\
@@ -18,39 +18,51 @@ const tabs = [
 ];
 
 const parsed = computed(() => {
-  try { return parseCurl(input.value); }
-  catch { return null; }
+  try {
+    return parseCurl(input.value);
+  }
+  catch {
+    return null;
+  }
 });
 
 const output = computed(() => {
-  if (!parsed.value) return '// Could not parse cURL command';
-  if (tab.value === 'fetch') return toFetch(parsed.value);
-  if (tab.value === 'axios') return toAxios(parsed.value);
-  if (tab.value === 'python') return toPython(parsed.value);
+  if (!parsed.value) {
+    return '// Could not parse cURL command';
+  }
+  if (tab.value === 'fetch') {
+    return toFetch(parsed.value);
+  }
+  if (tab.value === 'axios') {
+    return toAxios(parsed.value);
+  }
+  if (tab.value === 'python') {
+    return toPython(parsed.value);
+  }
   return toNodeFetch(parsed.value);
 });
 
-const lang = computed(() => tab.value === 'python' ? 'python' : 'javascript');
+const _lang = computed(() => tab.value === 'python' ? 'python' : 'javascript');
 
 const { copy, isJustCopied } = useCopy({ source: output, text: 'Copied!' });
 </script>
 
 <template>
   <div class="cc-root">
-    <div flex gap-3 flex-col>
+    <div flex flex-col gap-3>
       <c-card title="cURL command">
         <c-input-text
           v-model:value="input"
-          multiline
+
           :rows="6"
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
           placeholder="Paste your curl command here..."
         />
       </c-card>
 
       <c-card>
-        <div flex gap-2 flex-wrap mb-3>
+        <div mb-3 flex flex-wrap gap-2>
           <button
             v-for="t in tabs"
             :key="t.value"
@@ -69,14 +81,13 @@ const { copy, isJustCopied } = useCopy({ source: output, text: 'Copied!' });
 
         <c-input-text
           :value="output"
-          multiline
+
           :rows="14"
-          font-mono
-          readonly
-          raw-text
+
+          multiline readonly raw-text font-mono
         />
 
-        <div flex justify-end mt-2>
+        <div mt-2 flex justify-end>
           <c-button @click="copy()">
             {{ isJustCopied ? 'Copied!' : 'Copy' }}
           </c-button>

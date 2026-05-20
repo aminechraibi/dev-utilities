@@ -11,13 +11,21 @@ const dateA = ref(nowLocal());
 const dateB = ref('2020-01-01T00:00');
 
 const diff = computed(() => {
-  if (!dateA.value || !dateB.value) return null;
-  try { return calculateDateDiff(dateA.value, dateB.value); }
-  catch { return null; }
+  if (!dateA.value || !dateB.value) {
+    return null;
+  }
+  try {
+    return calculateDateDiff(dateA.value, dateB.value);
+  }
+  catch {
+    return null;
+  }
 });
 
 const rows = computed(() => {
-  if (!diff.value) return [];
+  if (!diff.value) {
+    return [];
+  }
   const d = diff.value;
   return [
     { label: 'Breakdown', value: d.breakdown, highlight: true },

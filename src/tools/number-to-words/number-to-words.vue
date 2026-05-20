@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { numberToWords, numberToOrdinal } from './number-to-words.service';
+import { numberToOrdinal, numberToWords } from './number-to-words.service';
 import { useCopy } from '@/composable/copy';
 
 const inputValue = ref<number | null>(42);
@@ -26,7 +26,7 @@ const { copy: copyOrdinal } = useCopy({ source: ordinalOutput, text: 'Ordinal co
 <template>
   <div flex flex-col gap-3>
     <c-card>
-      <div flex items-center gap-3 mb-3>
+      <div mb-3 flex items-center gap-3>
         <n-input-number
           v-model:value="inputValue"
           style="flex: 1"
@@ -43,13 +43,13 @@ const { copy: copyOrdinal } = useCopy({ source: ordinalOutput, text: 'Ordinal co
         placeholder="Words will appear here..."
         mb-3
       />
-      <div flex justify-center mb-4>
+      <div mb-4 flex justify-center>
         <c-button :disabled="!wordsOutput" @click="copyWords()">
           Copy words
         </c-button>
       </div>
 
-      <div flex items-center gap-2 mb-3>
+      <div mb-3 flex items-center gap-2>
         <n-switch v-model:value="showOrdinal" />
         <span>Show ordinal form</span>
       </div>

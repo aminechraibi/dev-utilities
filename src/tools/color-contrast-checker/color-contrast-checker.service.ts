@@ -18,7 +18,9 @@ export function getContrastRatio(fg: string, bg: string): number {
 }
 
 export function getWcagLevel(ratio: number, isLargeText: boolean): 'AAA' | 'AA' | 'FAIL' {
-  if (isLargeText) return ratio >= 4.5 ? 'AAA' : ratio >= 3 ? 'AA' : 'FAIL';
+  if (isLargeText) {
+    return ratio >= 4.5 ? 'AAA' : ratio >= 3 ? 'AA' : 'FAIL';
+  }
   return ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : 'FAIL';
 }
 

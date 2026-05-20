@@ -1,8 +1,8 @@
 export interface ParsedHeader {
-  name: string;
-  value: string;
-  description: string;
-  category: string;
+  name: string
+  value: string
+  description: string
+  category: string
 }
 
 export const headerDescriptions: Record<string, { description: string; category: string }> = {
@@ -249,18 +249,26 @@ export function parseHeaders(raw: string): ParsedHeader[] {
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed) continue;
+    if (!trimmed) {
+      continue;
+    }
 
     // Skip HTTP status line
-    if (/^HTTP\//.test(trimmed)) continue;
+    if (/^HTTP\//.test(trimmed)) {
+      continue;
+    }
 
     const colonIndex = trimmed.indexOf(':');
-    if (colonIndex === -1) continue;
+    if (colonIndex === -1) {
+      continue;
+    }
 
     const name = trimmed.slice(0, colonIndex).trim();
     const value = trimmed.slice(colonIndex + 1).trim();
 
-    if (!name) continue;
+    if (!name) {
+      continue;
+    }
 
     const key = name.toLowerCase();
     const meta = headerDescriptions[key];

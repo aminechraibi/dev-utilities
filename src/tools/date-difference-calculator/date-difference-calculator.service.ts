@@ -1,11 +1,11 @@
 import {
   differenceInDays,
-  differenceInWeeks,
-  differenceInMonths,
-  differenceInYears,
   differenceInHours,
   differenceInMinutes,
+  differenceInMonths,
   differenceInSeconds,
+  differenceInWeeks,
+  differenceInYears,
 } from 'date-fns';
 
 export function calculateDateDiff(a: string, b: string) {
@@ -32,12 +32,24 @@ export function calculateDateDiff(a: string, b: string) {
   const remSeconds = totalSeconds - totalMinutes * 60;
 
   const parts = [];
-  if (totalYears > 0) parts.push(`${totalYears}y`);
-  if (remMonths > 0) parts.push(`${remMonths}mo`);
-  if (remDays > 0) parts.push(`${remDays}d`);
-  if (remHours > 0) parts.push(`${remHours}h`);
-  if (remMinutes > 0) parts.push(`${remMinutes}m`);
-  if (remSeconds > 0 || parts.length === 0) parts.push(`${remSeconds}s`);
+  if (totalYears > 0) {
+    parts.push(`${totalYears}y`);
+  }
+  if (remMonths > 0) {
+    parts.push(`${remMonths}mo`);
+  }
+  if (remDays > 0) {
+    parts.push(`${remDays}d`);
+  }
+  if (remHours > 0) {
+    parts.push(`${remHours}h`);
+  }
+  if (remMinutes > 0) {
+    parts.push(`${remMinutes}m`);
+  }
+  if (remSeconds > 0 || parts.length === 0) {
+    parts.push(`${remSeconds}s`);
+  }
 
   return {
     totalYears,

@@ -1,13 +1,19 @@
 export function htmlToMarkdown(html: string): string {
-  if (!html.trim()) return '';
+  if (!html.trim()) {
+    return '';
+  }
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   return nodeToMarkdown(doc.body).trim();
 }
 
 function nodeToMarkdown(node: Node): string {
-  if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? '';
-  if (node.nodeType !== Node.ELEMENT_NODE) return '';
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent ?? '';
+  }
+  if (node.nodeType !== Node.ELEMENT_NODE) {
+    return '';
+  }
   const el = node as Element;
   const tag = el.tagName.toLowerCase();
   const children = Array.from(el.childNodes).map(nodeToMarkdown).join('');
@@ -31,8 +37,8 @@ function nodeToMarkdown(node: Node): string {
     case 'br': return '\n';
     case 'a': return `[${children}](${el.getAttribute('href') ?? ''})`;
     case 'img': return `![${el.getAttribute('alt') ?? ''}](${el.getAttribute('src') ?? ''})`;
-    case 'ul': return '\n' + Array.from(el.children).map(li => `- ${nodeToMarkdown(li).trim()}`).join('\n') + '\n';
-    case 'ol': return '\n' + Array.from(el.children).map((li, i) => `${i + 1}. ${nodeToMarkdown(li).trim()}`).join('\n') + '\n';
+    case 'ul': return `\n${Array.from(el.children).map(li => `- ${nodeToMarkdown(li).trim()}`).join('\n')}\n`;
+    case 'ol': return `\n${Array.from(el.children).map((li, i) => `${i + 1}. ${nodeToMarkdown(li).trim()}`).join('\n')}\n`;
     case 'li': return children;
     case 'del':
     case 's': return `~~${children}~~`;

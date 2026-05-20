@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { isValidXML } from '../xml-formatter/xml-formatter.service';
-import { withDefaultOnError } from '@/utils/defaults';
 import { xmlToYaml } from './xml-to-yaml.service';
+import { withDefaultOnError } from '@/utils/defaults';
 import type { UseValidationRule } from '@/composable/validation';
 
 const defaultXml = `<root>

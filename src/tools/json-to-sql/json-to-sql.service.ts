@@ -5,8 +5,12 @@ function inferType(value: unknown, dialect: SqlDialect): string {
     return 'TEXT';
   }
   if (typeof value === 'boolean') {
-    if (dialect === 'mysql') return 'TINYINT(1)';
-    if (dialect === 'mssql') return 'BIT';
+    if (dialect === 'mysql') {
+      return 'TINYINT(1)';
+    }
+    if (dialect === 'mssql') {
+      return 'BIT';
+    }
     return 'BOOLEAN';
   }
   if (typeof value === 'number') {
@@ -28,23 +32,33 @@ function inferType(value: unknown, dialect: SqlDialect): string {
 }
 
 function quoteIdentifier(name: string, dialect: SqlDialect): string {
-  if (dialect === 'mysql') return `\`${name}\``;
-  if (dialect === 'mssql') return `[${name}]`;
+  if (dialect === 'mysql') {
+    return `\`${name}\``;
+  }
+  if (dialect === 'mssql') {
+    return `[${name}]`;
+  }
   return `"${name}"`;
 }
 
 function formatValue(value: unknown, dialect: SqlDialect): string {
-  if (value === null || value === undefined) return 'NULL';
+  if (value === null || value === undefined) {
+    return 'NULL';
+  }
   if (typeof value === 'boolean') {
-    if (dialect === 'mysql' || dialect === 'mssql') return value ? '1' : '0';
+    if (dialect === 'mysql' || dialect === 'mssql') {
+      return value ? '1' : '0';
+    }
     return value ? 'TRUE' : 'FALSE';
   }
-  if (typeof value === 'number') return String(value);
+  if (typeof value === 'number') {
+    return String(value);
+  }
   if (typeof value === 'string') {
-    const escaped = value.replace(/'/g, "''");
+    const escaped = value.replace(/'/g, '\'\'');
     return `'${escaped}'`;
   }
-  return `'${JSON.stringify(value).replace(/'/g, "''")}'`;
+  return `'${JSON.stringify(value).replace(/'/g, '\'\'')}'`;
 }
 
 export function jsonToSql(json: string, tableName: string, dialect: SqlDialect): string {
@@ -57,7 +71,7 @@ export function jsonToSql(json: string, tableName: string, dialect: SqlDialect):
   }
 
   if (!Array.isArray(parsed)) {
-    throw new Error('JSON must be an array of objects');
+    throw new TypeError('JSON must be an array of objects');
   }
 
   if (parsed.length === 0) {

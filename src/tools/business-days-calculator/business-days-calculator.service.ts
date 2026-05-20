@@ -6,11 +6,14 @@ export function countBusinessDays(startStr: string, endStr: string, holidays: st
   const [s, e] = start <= end ? [start, end] : [end, start];
   const holidaySet = new Set(holidays);
   let count = 0;
-  const cur = new Date(s);
-  while (cur <= e) {
+  let cur = new Date(s);
+  const endTime = e.getTime();
+  while (cur.getTime() <= endTime) {
     const key = cur.toISOString().split('T')[0];
-    if (!isWeekend(cur) && !holidaySet.has(key)) count++;
-    cur.setDate(cur.getDate() + 1);
+    if (!isWeekend(cur) && !holidaySet.has(key)) {
+      count++;
+    }
+    cur = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + 1);
   }
   return count;
 }
@@ -23,7 +26,9 @@ export function addBusinessDays(dateStr: string, days: number, holidays: string[
   while (remaining > 0) {
     result.setDate(result.getDate() + dir);
     const key = result.toISOString().split('T')[0];
-    if (!isWeekend(result) && !holidaySet.has(key)) remaining--;
+    if (!isWeekend(result) && !holidaySet.has(key)) {
+      remaining--;
+    }
   }
   return result.toISOString().split('T')[0];
 }

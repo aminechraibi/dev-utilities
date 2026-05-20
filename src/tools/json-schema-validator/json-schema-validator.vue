@@ -18,7 +18,9 @@ const schemaInput = ref(`{
 }`);
 
 const result = computed(() => {
-  if (!jsonInput.value.trim() && !schemaInput.value.trim()) return null;
+  if (!jsonInput.value.trim() && !schemaInput.value.trim()) {
+    return null;
+  }
   return validateJsonSchema(jsonInput.value, schemaInput.value);
 });
 </script>
@@ -58,22 +60,22 @@ const result = computed(() => {
       <c-card title="JSON Input" class="editor-card">
         <c-input-text
           v-model:value="jsonInput"
-          multiline
+
           :rows="18"
           placeholder="Paste your JSON here..."
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
         />
       </c-card>
 
       <c-card title="JSON Schema" class="editor-card">
         <c-input-text
           v-model:value="schemaInput"
-          multiline
+
           :rows="18"
           placeholder="Paste your JSON Schema here..."
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
         />
       </c-card>
     </div>

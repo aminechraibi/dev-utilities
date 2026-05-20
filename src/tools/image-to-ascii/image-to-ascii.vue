@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
 import { imageDataToAscii } from './image-to-ascii.service';
+import { useCopy } from '@/composable/copy';
 
 const asciiOutput = ref('');
 const width = ref(80);
@@ -78,8 +78,8 @@ const { copy } = useCopy({ source: asciiOutput, text: 'ASCII art copied to clipb
         {{ errorMsg }}
       </c-alert>
 
-      <div flex gap-4 flex-wrap items-end>
-        <div flex-1 min-w-200px>
+      <div flex flex-wrap items-end gap-4>
+        <div min-w-200px flex-1>
           <n-form-item :label="`Width (columns): ${width}`" label-placement="top" :show-feedback="false">
             <n-slider v-model:value="width" :min="40" :max="200" :step="1" />
           </n-form-item>
@@ -109,6 +109,3 @@ const { copy } = useCopy({ source: asciiOutput, text: 'ASCII art copied to clipb
     </div>
   </c-card>
 </template>
-
-<style lang="less" scoped>
-</style>

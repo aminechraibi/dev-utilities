@@ -1,5 +1,5 @@
-export type Unit = { name: string; symbol: string; toBase: number };
-export type Category = { name: string; units: Unit[] };
+export interface Unit { name: string; symbol: string; toBase: number }
+export interface Category { name: string; units: Unit[] }
 
 export const categories: Category[] = [
   {

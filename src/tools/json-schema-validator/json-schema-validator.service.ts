@@ -1,14 +1,18 @@
 export interface ValidationResult {
-  valid: boolean;
-  errors: string[];
+  valid: boolean
+  errors: string[]
 }
 
 type JsonSchema = Record<string, unknown>;
 type JsonValue = string | number | boolean | null | JsonValue[] | Record<string, JsonValue>;
 
 function getJsonType(value: JsonValue): string {
-  if (value === null) return 'null';
-  if (Array.isArray(value)) return 'array';
+  if (value === null) {
+    return 'null';
+  }
+  if (Array.isArray(value)) {
+    return 'array';
+  }
   return typeof value;
 }
 
@@ -16,7 +20,9 @@ function validateFormat(value: string, format: string, path: string): string | n
   switch (format) {
     case 'email': {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) return `${path}: invalid email format`;
+      if (!emailRegex.test(value)) {
+        return `${path}: invalid email format`;
+      }
       break;
     }
     case 'uri': {
@@ -50,7 +56,9 @@ function validateFormat(value: string, format: string, path: string): string | n
     }
     case 'uuid': {
       const uuidRegex = /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i;
-      if (!uuidRegex.test(value)) return `${path}: invalid UUID format`;
+      if (!uuidRegex.test(value)) {
+        return `${path}: invalid UUID format`;
+      }
       break;
     }
   }
@@ -92,7 +100,9 @@ function validateValue(value: JsonValue, schema: JsonSchema, path: string): stri
     }
     if (schema.format !== undefined) {
       const formatError = validateFormat(value, schema.format as string, path);
-      if (formatError) errors.push(formatError);
+      if (formatError) {
+        errors.push(formatError);
+      }
     }
   }
 

@@ -8,7 +8,9 @@ const input = useStorage('statistics-calculator:input', '4, 7, 13, 2, 1, 7, 9, 1
 const stats = computed(() => {
   try {
     const nums = parseNumbers(input.value);
-    if (nums.length === 0) return null;
+    if (nums.length === 0) {
+      return null;
+    }
     return calculateStatistics(nums);
   }
   catch {
@@ -19,7 +21,9 @@ const stats = computed(() => {
 const fmt = (n: number) => Number.isInteger(n) ? String(n) : n.toFixed(4);
 
 const items = computed(() => {
-  if (!stats.value) return [];
+  if (!stats.value) {
+    return [];
+  }
   const s = stats.value;
   return [
     { label: 'Count', value: String(s.count) },

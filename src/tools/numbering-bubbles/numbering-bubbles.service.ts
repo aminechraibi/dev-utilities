@@ -1,10 +1,10 @@
 export type BubbleShape = 'circle' | 'square' | 'diamond';
 
 export interface BubbleOptions {
-  shape: BubbleShape;
-  size: number;
-  bgColor: string;
-  textColor: string;
+  shape: BubbleShape
+  size: number
+  bgColor: string
+  textColor: string
 }
 
 export function generateBubbleSvg(num: number, options: BubbleOptions): string {

@@ -1,11 +1,15 @@
 export function evaluateJsonPath(jsonStr: string, path: string): unknown[] {
   const obj = JSON.parse(jsonStr);
-  if (!path.startsWith('$')) throw new Error('Path must start with $');
+  if (!path.startsWith('$')) {
+    throw new Error('Path must start with $');
+  }
   return queryPath(obj, path.slice(1));
 }
 
 function queryPath(obj: unknown, path: string): unknown[] {
-  if (path === '' || path === '.') return [obj];
+  if (path === '' || path === '.') {
+    return [obj];
+  }
 
   // Recursive descent ..key
   if (path.startsWith('..')) {
@@ -34,11 +38,13 @@ function queryPath(obj: unknown, path: string): unknown[] {
       const items = Array.isArray(obj) ? obj : Object.values(obj as object);
       return items.flatMap(item => queryPath(item, rest));
     }
-    const idx = parseInt(expr);
-    if (!isNaN(idx)) {
+    const idx = Number.parseInt(expr);
+    if (!Number.isNaN(idx)) {
       const arr = obj as unknown[];
       const item = arr[idx < 0 ? arr.length + idx : idx];
-      return item !== undefined ? queryPath(item, rest) : [];
+      return item !== undefined
+        ? queryPath(item, rest)
+        : [];
     }
     // String key in brackets
     const strKey = expr.replace(/^['"]|['"]$/g, '');
@@ -50,13 +56,17 @@ function queryPath(obj: unknown, path: string): unknown[] {
 }
 
 function collectRecursive(obj: unknown, key: string, results: unknown[]) {
-  if (typeof obj !== 'object' || obj === null) return;
+  if (typeof obj !== 'object' || obj === null) {
+    return;
+  }
   if (Array.isArray(obj)) {
     obj.forEach(item => collectRecursive(item, key, results));
   }
   else {
     const o = obj as Record<string, unknown>;
-    if (!key || key in o) results.push(key ? o[key] : obj);
+    if (!key || key in o) {
+      results.push(key ? o[key] : obj);
+    }
     Object.values(o).forEach(v => collectRecursive(v, key, results));
   }
 }

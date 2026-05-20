@@ -2,15 +2,17 @@ import cronstrue from 'cronstrue';
 import { isValidCron } from 'cron-validator';
 
 export interface CronParseResult {
-  description: string;
-  nextRuns: Date[];
+  description: string
+  nextRuns: Date[]
 }
 
 function parseField(field: string, min: number, max: number): number[] {
   const values: number[] = [];
 
   if (field === '*') {
-    for (let i = min; i <= max; i++) values.push(i);
+    for (let i = min; i <= max; i++) {
+      values.push(i);
+    }
     return values;
   }
 
@@ -31,15 +33,21 @@ function parseField(field: string, min: number, max: number): number[] {
           start = Number.parseInt(rangePart, 10);
         }
       }
-      for (let i = start; i <= end; i += step) values.push(i);
+      for (let i = start; i <= end; i += step) {
+        values.push(i);
+      }
     }
     else if (part.includes('-')) {
       const [start, end] = part.split('-').map(Number);
-      for (let i = start; i <= end; i++) values.push(i);
+      for (let i = start; i <= end; i++) {
+        values.push(i);
+      }
     }
     else if (part !== '*') {
       const val = Number.parseInt(part, 10);
-      if (!Number.isNaN(val)) values.push(val);
+      if (!Number.isNaN(val)) {
+        values.push(val);
+      }
     }
   }
 
@@ -61,8 +69,18 @@ const DOW_MAP: Record<string, number> = {
 };
 
 const MONTH_MAP: Record<string, number> = {
-  jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
-  jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12,
+  jan: 1,
+  feb: 2,
+  mar: 3,
+  apr: 4,
+  may: 5,
+  jun: 6,
+  jul: 7,
+  aug: 8,
+  sep: 9,
+  oct: 10,
+  nov: 11,
+  dec: 12,
 };
 
 function normalizeField(field: string): string {
@@ -78,7 +96,7 @@ function normalizeField(field: string): string {
 
 function getNextRuns(expr: string, count: number): Date[] {
   // Resolve presets
-  let resolvedExpr = PRESET_MAP[expr.toLowerCase()] ?? expr;
+  const resolvedExpr = PRESET_MAP[expr.toLowerCase()] ?? expr;
 
   const parts = resolvedExpr.trim().split(/\s+/);
   // Support 5-field (min hr dom mon dow) and 6-field (sec min hr dom mon dow)
@@ -137,8 +155,8 @@ function getNextRuns(expr: string, count: number): Date[] {
     }
 
     // DOM/DOW logic: if both are specified (not *), match either; otherwise match the specified one
-    let domMatch = doms.includes(dom);
-    let dowMatch = dows.includes(dow);
+    const domMatch = doms.includes(dom);
+    const dowMatch = dows.includes(dow);
 
     let dateMatch: boolean;
     if (domStar && dowStar) {
@@ -197,7 +215,9 @@ function getNextRuns(expr: string, count: number): Date[] {
 }
 
 export function isCronValid(expr: string): boolean {
-  if (PRESET_MAP[expr.toLowerCase()]) return true;
+  if (PRESET_MAP[expr.toLowerCase()]) {
+    return true;
+  }
   return isValidCron(expr, { allowBlankDay: true, alias: true, seconds: true });
 }
 

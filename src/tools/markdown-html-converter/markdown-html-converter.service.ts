@@ -11,8 +11,12 @@ export function htmlToMd(html: string): string {
 }
 
 function nodeToMd(node: Node): string {
-  if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? '';
-  if (node.nodeType !== Node.ELEMENT_NODE) return '';
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent ?? '';
+  }
+  if (node.nodeType !== Node.ELEMENT_NODE) {
+    return '';
+  }
 
   const el = node as HTMLElement;
   const tag = el.tagName.toLowerCase();
@@ -26,7 +30,7 @@ function nodeToMd(node: Node): string {
     case 'h5': return `##### ${children()}\n\n`;
     case 'h6': return `###### ${children()}\n\n`;
     case 'p': return `${children()}\n\n`;
-    case 'br': return `\n`;
+    case 'br': return '\n';
     case 'strong':
     case 'b': return `**${children()}**`;
     case 'em':
@@ -35,7 +39,9 @@ function nodeToMd(node: Node): string {
     case 'del': return `~~${children()}~~`;
     case 'code': {
       const parent = el.parentElement?.tagName.toLowerCase();
-      if (parent === 'pre') return el.textContent ?? '';
+      if (parent === 'pre') {
+        return el.textContent ?? '';
+      }
       return `\`${el.textContent}\``;
     }
     case 'pre': {
@@ -45,7 +51,7 @@ function nodeToMd(node: Node): string {
       return `\`\`\`${lang}\n${text}\n\`\`\`\n\n`;
     }
     case 'blockquote':
-      return children().split('\n').map(l => `> ${l}`).join('\n') + '\n\n';
+      return `${children().split('\n').map(l => `> ${l}`).join('\n')}\n\n`;
     case 'a': {
       const href = el.getAttribute('href') ?? '';
       const title = el.getAttribute('title');
@@ -57,21 +63,23 @@ function nodeToMd(node: Node): string {
       return `![${alt}](${src})`;
     }
     case 'ul':
-      return Array.from(el.children).map(li => `- ${nodeToMd(li).trim()}`).join('\n') + '\n\n';
+      return `${Array.from(el.children).map(li => `- ${nodeToMd(li).trim()}`).join('\n')}\n\n`;
     case 'ol':
-      return Array.from(el.children).map((li, i) => `${i + 1}. ${nodeToMd(li).trim()}`).join('\n') + '\n\n';
+      return `${Array.from(el.children).map((li, i) => `${i + 1}. ${nodeToMd(li).trim()}`).join('\n')}\n\n`;
     case 'li': return children();
-    case 'hr': return `---\n\n`;
+    case 'hr': return '---\n\n';
     case 'table': {
       const rows = Array.from(el.querySelectorAll('tr'));
-      if (!rows.length) return '';
+      if (!rows.length) {
+        return '';
+      }
       const toRow = (r: Element) =>
-        '| ' + Array.from(r.querySelectorAll('th,td')).map(c => c.textContent?.trim() ?? '').join(' | ') + ' |';
+        `| ${Array.from(r.querySelectorAll('th,td')).map(c => c.textContent?.trim() ?? '').join(' | ')} |`;
       const header = toRow(rows[0]!);
       const cols = rows[0]!.querySelectorAll('th,td').length;
-      const sep = '| ' + Array.from({ length: cols }, () => '---').join(' | ') + ' |';
+      const sep = `| ${Array.from({ length: cols }, () => '---').join(' | ')} |`;
       const body = rows.slice(1).map(toRow).join('\n');
-      return `${header}\n${sep}${body ? '\n' + body : ''}\n\n`;
+      return `${header}\n${sep}${body ? `\n${body}` : ''}\n\n`;
     }
     default:
       return children();

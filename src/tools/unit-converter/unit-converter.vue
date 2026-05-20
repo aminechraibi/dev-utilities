@@ -14,7 +14,9 @@ watch(
   selectedCategory,
   () => {
     Object.keys(values).forEach(k => delete values[k]);
-    category.value.units.forEach((u) => { values[u.symbol] = 0; });
+    category.value.units.forEach((u) => {
+      values[u.symbol] = 0;
+    });
   },
   { immediate: true },
 );

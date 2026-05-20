@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue';
-import { IconUpload, IconArrowBack, IconArrowForward, IconTrash, IconDownload, IconCopy } from '@tabler/icons-vue';
+import { computed, nextTick, ref, watch } from 'vue';
+import { IconArrowBack, IconArrowForward, IconCopy, IconDownload, IconTrash, IconUpload } from '@tabler/icons-vue';
 
 type AnnotationTool = 'select' | 'text' | 'rectangle' | 'arrow' | 'number';
 
 interface Annotation {
-  type: Exclude<AnnotationTool, 'select'>;
-  color: string;
-  fontSize?: number;
-  x: number;
-  y: number;
-  x2?: number;
-  y2?: number;
-  text?: string;
-  number?: number;
+  type: Exclude<AnnotationTool, 'select'>
+  color: string
+  fontSize?: number
+  x: number
+  y: number
+  x2?: number
+  y2?: number
+  text?: string
+  number?: number
 }
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
@@ -57,16 +57,22 @@ const selectedAnnotation = computed(() =>
 );
 
 const canvasCursor = computed(() => {
-  if (activeTool.value !== 'select') return 'crosshair';
+  if (activeTool.value !== 'select') {
+    return 'crosshair';
+  }
   return hoverIdx.value !== null || isDragging.value ? 'move' : 'default';
 });
 
 const canUndo = computed(() => {
-  if (activeTool.value === 'select') return false;
+  if (activeTool.value === 'select') {
+    return false;
+  }
   return annotations.value.some(a => a.type === activeTool.value);
 });
 const canRedo = computed(() => {
-  if (activeTool.value === 'select') return false;
+  if (activeTool.value === 'select') {
+    return false;
+  }
   return redoStacks.value[activeTool.value as DrawTool].length > 0;
 });
 
@@ -78,32 +84,46 @@ function syncEditFields(ann: Annotation) {
 }
 
 watch(selectedAnnotation, (ann) => {
-  if (ann) syncEditFields(ann);
+  if (ann) {
+    syncEditFields(ann);
+  }
 });
 
 // Apply edit-panel changes back to annotation immediately
 watch([editColor, editFontSize, editText, editNumber], () => {
   const idx = selectedIdx.value;
-  if (idx === null) return;
+  if (idx === null) {
+    return;
+  }
   const ann = annotations.value[idx];
-  if (!ann) return;
+  if (!ann) {
+    return;
+  }
   ann.color = editColor.value;
   ann.fontSize = editFontSize.value;
-  if (ann.type === 'text') ann.text = editText.value;
-  if (ann.type === 'number') ann.number = editNumber.value;
+  if (ann.type === 'text') {
+    ann.text = editText.value;
+  }
+  if (ann.type === 'number') {
+    ann.number = editNumber.value;
+  }
   redraw();
 });
 
 function getCanvasScale(): { scaleX: number; scaleY: number } {
   const canvas = canvasRef.value;
-  if (!canvas) return { scaleX: 1, scaleY: 1 };
+  if (!canvas) {
+    return { scaleX: 1, scaleY: 1 };
+  }
   const rect = canvas.getBoundingClientRect();
   return { scaleX: canvas.width / rect.width, scaleY: canvas.height / rect.height };
 }
 
 function getCanvasCoords(e: MouseEvent): { x: number; y: number } {
   const canvas = canvasRef.value;
-  if (!canvas) return { x: 0, y: 0 };
+  if (!canvas) {
+    return { x: 0, y: 0 };
+  }
   const rect = canvas.getBoundingClientRect();
   const { scaleX, scaleY } = getCanvasScale();
   return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
@@ -112,7 +132,9 @@ function getCanvasCoords(e: MouseEvent): { x: number; y: number } {
 function distToSegment(px: number, py: number, ax: number, ay: number, bx: number, by: number): number {
   const dx = bx - ax;
   const dy = by - ay;
-  if (dx === 0 && dy === 0) return Math.hypot(px - ax, py - ay);
+  if (dx === 0 && dy === 0) {
+    return Math.hypot(px - ax, py - ay);
+  }
   const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
   return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
 }
@@ -140,7 +162,9 @@ function hitTest(ann: Annotation, x: number, y: number): boolean {
 
 function findAnnotationAt(x: number, y: number): number | null {
   for (let i = annotations.value.length - 1; i >= 0; i--) {
-    if (hitTest(annotations.value[i], x, y)) return i;
+    if (hitTest(annotations.value[i], x, y)) {
+      return i;
+    }
   }
   return null;
 }
@@ -148,22 +172,32 @@ function findAnnotationAt(x: number, y: number): number | null {
 function moveAnnotation(ann: Annotation, orig: Annotation, dx: number, dy: number) {
   ann.x = orig.x + dx;
   ann.y = orig.y + dy;
-  if (orig.x2 !== undefined) ann.x2 = orig.x2 + dx;
-  if (orig.y2 !== undefined) ann.y2 = orig.y2 + dy;
+  if (orig.x2 !== undefined) {
+    ann.x2 = orig.x2 + dx;
+  }
+  if (orig.y2 !== undefined) {
+    ann.y2 = orig.y2 + dy;
+  }
 }
 
 function redraw() {
   const canvas = canvasRef.value;
   const img = loadedImage.value;
-  if (!canvas || !img) return;
+  if (!canvas || !img) {
+    return;
+  }
   const ctx = canvas.getContext('2d')!;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   annotations.value.forEach((ann, i) => {
     drawAnnotation(ctx, ann);
-    if (i === selectedIdx.value) drawSelectionHighlight(ctx, ann);
+    if (i === selectedIdx.value) {
+      drawSelectionHighlight(ctx, ann);
+    }
   });
-  if (currentAnnotation.value) drawAnnotation(ctx, currentAnnotation.value);
+  if (currentAnnotation.value) {
+    drawAnnotation(ctx, currentAnnotation.value);
+  }
 }
 
 function drawSelectionHighlight(ctx: CanvasRenderingContext2D, ann: Annotation) {
@@ -250,7 +284,9 @@ function pushAnnotation(ann: Annotation) {
 }
 
 function onMouseDown(e: MouseEvent) {
-  if (!imageLoaded.value) return;
+  if (!imageLoaded.value) {
+    return;
+  }
   const { x, y } = getCanvasCoords(e);
 
   if (activeTool.value === 'select') {
@@ -308,7 +344,9 @@ function onMouseMove(e: MouseEvent) {
     return;
   }
 
-  if (!isDrawing.value || !currentAnnotation.value) return;
+  if (!isDrawing.value || !currentAnnotation.value) {
+    return;
+  }
   currentAnnotation.value.x2 = x;
   currentAnnotation.value.y2 = y;
   redraw();
@@ -320,7 +358,9 @@ function onMouseUp(e: MouseEvent) {
     dragOriginal.value = null;
     return;
   }
-  if (!isDrawing.value || !currentAnnotation.value) return;
+  if (!isDrawing.value || !currentAnnotation.value) {
+    return;
+  }
   const { x, y } = getCanvasCoords(e);
   currentAnnotation.value.x2 = x;
   currentAnnotation.value.y2 = y;
@@ -348,7 +388,9 @@ function cancelText() {
 
 function deleteSelected() {
   const idx = selectedIdx.value;
-  if (idx === null) return;
+  if (idx === null) {
+    return;
+  }
   annotations.value.splice(idx, 1);
   selectedIdx.value = null;
   redraw();
@@ -356,7 +398,9 @@ function deleteSelected() {
 
 function onFileInputChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
-  if (file) loadFile(file);
+  if (file) {
+    loadFile(file);
+  }
 }
 
 function loadFile(file: File) {
@@ -369,7 +413,9 @@ function loadFile(file: File) {
       imageLoaded.value = true;
       await nextTick();
       const canvas = canvasRef.value;
-      if (!canvas) return;
+      if (!canvas) {
+        return;
+      }
       const maxW = canvas.parentElement?.clientWidth ?? 1200;
       const scale = img.width > maxW ? maxW / img.width : 1;
       canvas.width = Math.round(img.width * scale);
@@ -385,25 +431,35 @@ function loadFile(file: File) {
 }
 
 function undoLast() {
-  if (activeTool.value === 'select') return;
+  if (activeTool.value === 'select') {
+    return;
+  }
   const tool = activeTool.value as DrawTool;
   const lastIdx = annotations.value.map((a, i) => ({ a, i })).filter(({ a }) => a.type === tool).at(-1)?.i;
   if (lastIdx !== undefined) {
     const [removed] = annotations.value.splice(lastIdx, 1);
     redoStacks.value[tool].push(removed);
-    if (tool === 'number') startNumber.value = removed.number!;
-    if (selectedIdx.value === lastIdx) selectedIdx.value = null;
+    if (tool === 'number') {
+      startNumber.value = removed.number!;
+    }
+    if (selectedIdx.value === lastIdx) {
+      selectedIdx.value = null;
+    }
   }
   redraw();
 }
 
 function redoLast() {
-  if (activeTool.value === 'select') return;
+  if (activeTool.value === 'select') {
+    return;
+  }
   const tool = activeTool.value as DrawTool;
   const next = redoStacks.value[tool].pop();
   if (next) {
     annotations.value.push(next);
-    if (tool === 'number') startNumber.value = next.number! + 1;
+    if (tool === 'number') {
+      startNumber.value = next.number! + 1;
+    }
   }
   redraw();
 }
@@ -417,7 +473,9 @@ function clearAll() {
 
 function downloadImage() {
   const canvas = canvasRef.value;
-  if (!canvas) return;
+  if (!canvas) {
+    return;
+  }
   const link = document.createElement('a');
   link.download = imageName.value ? `annotated-${imageName.value}` : 'annotated-image.png';
   link.href = canvas.toDataURL('image/png');
@@ -427,9 +485,13 @@ function downloadImage() {
 const copyPngStatus = ref<'idle' | 'ok' | 'err'>('idle');
 async function copyAsPng() {
   const canvas = canvasRef.value;
-  if (!canvas) return;
+  if (!canvas) {
+    return;
+  }
   canvas.toBlob(async (blob) => {
-    if (!blob) return;
+    if (!blob) {
+      return;
+    }
     try {
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       copyPngStatus.value = 'ok';
@@ -437,7 +499,9 @@ async function copyAsPng() {
     catch {
       copyPngStatus.value = 'err';
     }
-    setTimeout(() => { copyPngStatus.value = 'idle'; }, 1800);
+    setTimeout(() => {
+      copyPngStatus.value = 'idle';
+    }, 1800);
   }, 'image/png');
 }
 
@@ -453,7 +517,7 @@ const TOOLS: { id: AnnotationTool; label: string }[] = [
 <template>
   <div>
     <!-- Upload row -->
-    <div flex items-center gap-3 mb-3>
+    <div mb-3 flex items-center gap-3>
       <input ref="fileInputRef" type="file" accept="image/*" style="display:none" @change="onFileInputChange">
       <c-button size="small" @click="fileInputRef?.click()">
         <n-icon :component="IconUpload" mr-1 size="15" />
@@ -468,7 +532,7 @@ const TOOLS: { id: AnnotationTool; label: string }[] = [
 
     <template v-if="imageLoaded">
       <!-- Toolbar -->
-      <div flex flex-wrap items-center gap-2 mb-2>
+      <div mb-2 flex flex-wrap items-center gap-2>
         <div class="tool-group">
           <button
             v-for="tool in TOOLS"
@@ -518,7 +582,7 @@ const TOOLS: { id: AnnotationTool; label: string }[] = [
 
       <!-- Number tool config -->
       <div v-if="activeTool === 'number'" class="config-panel" mb-2>
-        <div flex items-center gap-4 flex-wrap>
+        <div flex flex-wrap items-center gap-4>
           <div flex items-center gap-2>
             <span class="label">Next number</span>
             <n-input-number v-model:value="startNumber" :min="0" :max="9999" style="width:80px" size="small" />
@@ -530,7 +594,7 @@ const TOOLS: { id: AnnotationTool; label: string }[] = [
 
       <!-- Select tool edit panel -->
       <div v-if="activeTool === 'select' && selectedAnnotation" class="config-panel edit-panel" mb-2>
-        <div flex items-center gap-3 flex-wrap>
+        <div flex flex-wrap items-center gap-3>
           <span class="type-badge">{{ selectedAnnotation.type }}</span>
 
           <div flex items-center gap-1>
@@ -564,7 +628,9 @@ const TOOLS: { id: AnnotationTool; label: string }[] = [
             Delete
           </c-button>
         </div>
-        <div style="font-size:12px;opacity:0.45;margin-top:6px">Drag annotation on canvas to reposition</div>
+        <div style="font-size:12px;opacity:0.45;margin-top:6px">
+          Drag annotation on canvas to reposition
+        </div>
       </div>
 
       <div v-else-if="activeTool === 'select' && !selectedAnnotation" class="config-panel" mb-2 style="opacity:0.6">
@@ -596,7 +662,7 @@ const TOOLS: { id: AnnotationTool; label: string }[] = [
             @keyup.enter="confirmText"
             @keyup.esc="cancelText"
           >
-          <div flex gap-2 mt-2>
+          <div mt-2 flex gap-2>
             <c-button size="small" @click="confirmText">
               Add
             </c-button>

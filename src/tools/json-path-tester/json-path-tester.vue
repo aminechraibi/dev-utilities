@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { useCopy } from '@/composable/copy';
 import { evaluateJsonPath } from './json-path-tester.service';
+import { useCopy } from '@/composable/copy';
 
 const mounted = ref(false);
-onMounted(() => { mounted.value = true; });
-onBeforeUnmount(() => { mounted.value = false; });
+onMounted(() => {
+  mounted.value = true;
+});
+onBeforeUnmount(() => {
+  mounted.value = false;
+});
 
 const defaultJson = `{
   "store": {
@@ -43,7 +47,9 @@ const result = computed(() => {
 });
 
 const resultStr = computed(() => {
-  if (!result.value.results) return '';
+  if (!result.value.results) {
+    return '';
+  }
   return JSON.stringify(result.value.results, null, 2);
 });
 
@@ -68,10 +74,10 @@ const { copy, isJustCopied } = useCopy({ source: resultStr, text: 'Results copie
         v-model:value="pathInput"
         label="JSONPath:"
         placeholder="$.store.book[*].title"
-        font-mono
-        mb-3
+
+        mb-3 font-mono
       />
-      <div flex gap-2 flex-wrap items-center>
+      <div flex flex-wrap items-center gap-2>
         <span text-sm op-60>Examples:</span>
         <c-button
           v-for="ex in examples"
@@ -89,7 +95,7 @@ const { copy, isJustCopied } = useCopy({ source: resultStr, text: 'Results copie
     </c-alert>
 
     <c-card v-if="result.results !== null" title="Results">
-      <div flex justify-between items-center mb-3>
+      <div mb-3 flex items-center justify-between>
         <span text-sm op-70>{{ result.results.length }} result{{ result.results.length !== 1 ? 's' : '' }} found</span>
         <c-button size="small" @click="copy()">
           {{ isJustCopied ? 'Copied!' : 'Copy' }}
@@ -104,8 +110,8 @@ const { copy, isJustCopied } = useCopy({ source: resultStr, text: 'Results copie
           :key="idx"
           flex gap-2
         >
-          <span font-mono text-xs op-50 pt-1 style="min-width:2rem;text-align:right;">[{{ idx }}]</span>
-          <pre font-mono text-sm p-2 rounded w-full style="background:var(--n-code-color,#f5f5f5);overflow-x:auto;margin:0;">{{ JSON.stringify(item, null, 2) }}</pre>
+          <span pt-1 text-xs font-mono op-50 style="min-width:2rem;text-align:right;">[{{ idx }}]</span>
+          <pre w-full rounded p-2 text-sm font-mono style="background:var(--n-code-color,#f5f5f5);overflow-x:auto;margin:0;">{{ JSON.stringify(item, null, 2) }}</pre>
         </div>
       </div>
     </c-card>

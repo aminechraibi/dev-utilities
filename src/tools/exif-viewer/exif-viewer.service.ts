@@ -69,25 +69,33 @@ function readEntryValue(
   const type = view.getUint16(entry + 2, le);
   const count = view.getUint32(entry + 4, le);
 
-  if (type === 0 || type >= TYPE_SIZES.length || count === 0 || count > 100000) return null;
+  if (type === 0 || type >= TYPE_SIZES.length || count === 0 || count > 100000) {
+    return null;
+  }
 
   const byteSize = TYPE_SIZES[type] * count;
   const valueStart = byteSize <= 4 ? entry + 8 : tiffStart + view.getUint32(entry + 8, le);
 
-  if (valueStart + byteSize > view.byteLength) return null;
+  if (valueStart + byteSize > view.byteLength) {
+    return null;
+  }
 
   if (type === 2) {
     let s = '';
     for (let j = 0; j < count; j++) {
       const c = view.getUint8(valueStart + j);
-      if (c === 0) break;
+      if (c === 0) {
+        break;
+      }
       s += String.fromCharCode(c);
     }
     return s.trim() || null;
   }
 
   if (type === 7) {
-    if (count > 8) return `[${count} bytes]`;
+    if (count > 8) {
+      return `[${count} bytes]`;
+    }
     return Array.from({ length: count }, (_, i) =>
       view.getUint8(valueStart + i).toString(16).padStart(2, '0'),
     ).join(' ');
@@ -105,14 +113,18 @@ function readEntryValue(
   }
 
   if (type === 3) {
-    if (count === 1) return String(view.getUint16(valueStart, le));
+    if (count === 1) {
+      return String(view.getUint16(valueStart, le));
+    }
     return Array.from({ length: Math.min(count, 8) }, (_, i) =>
       view.getUint16(valueStart + i * 2, le),
     ).join(', ');
   }
 
   if (type === 4) {
-    if (count === 1) return String(view.getUint32(valueStart, le));
+    if (count === 1) {
+      return String(view.getUint32(valueStart, le));
+    }
     return Array.from({ length: Math.min(count, 8) }, (_, i) =>
       view.getUint32(valueStart + i * 4, le),
     ).join(', ');
@@ -133,19 +145,29 @@ function readIFD(
   tagMap: Record<number, string>,
   result: Record<string, string>,
 ) {
-  if (ifdOffset + 2 > view.byteLength) return;
+  if (ifdOffset + 2 > view.byteLength) {
+    return;
+  }
   const count = view.getUint16(ifdOffset, le);
-  if (count > 512) return;
+  if (count > 512) {
+    return;
+  }
 
   for (let i = 0; i < count; i++) {
     const entry = ifdOffset + 2 + i * 12;
-    if (entry + 12 > view.byteLength) break;
+    if (entry + 12 > view.byteLength) {
+      break;
+    }
     const tag = view.getUint16(entry, le);
     const name = tagMap[tag];
-    if (!name) continue;
+    if (!name) {
+      continue;
+    }
     try {
       const val = readEntryValue(view, entry, tiffStart, le);
-      if (val !== null) result[name] = val;
+      if (val !== null) {
+        result[name] = val;
+      }
     }
     catch { /* skip broken entry */ }
   }
@@ -158,11 +180,15 @@ function getSubIFDOffset(
   le: boolean,
   pointerTag: number,
 ): number | null {
-  if (ifdOffset + 2 > view.byteLength) return null;
+  if (ifdOffset + 2 > view.byteLength) {
+    return null;
+  }
   const count = view.getUint16(ifdOffset, le);
   for (let i = 0; i < count; i++) {
     const entry = ifdOffset + 2 + i * 12;
-    if (entry + 12 > view.byteLength) break;
+    if (entry + 12 > view.byteLength) {
+      break;
+    }
     if (view.getUint16(entry, le) === pointerTag) {
       return tiffStart + view.getUint32(entry + 8, le);
     }
@@ -171,9 +197,9 @@ function getSubIFDOffset(
 }
 
 export interface ParsedExif {
-  camera: Record<string, string>;
-  exposure: Record<string, string>;
-  gps: Record<string, string>;
+  camera: Record<string, string>
+  exposure: Record<string, string>
+  gps: Record<string, string>
 }
 
 export async function extractExif(buffer: ArrayBuffer): Promise<ParsedExif> {
@@ -202,10 +228,14 @@ export async function extractExif(buffer: ArrayBuffer): Promise<ParsedExif> {
 
       if (h === 'Exif') {
         const tiffStart = offset + 10;
-        if (tiffStart + 8 > view.byteLength) throw new Error('EXIF segment truncated');
+        if (tiffStart + 8 > view.byteLength) {
+          throw new Error('EXIF segment truncated');
+        }
 
         const byteOrder = view.getUint16(tiffStart);
-        if (byteOrder !== 0x4949 && byteOrder !== 0x4D4D) throw new Error('Invalid TIFF byte order');
+        if (byteOrder !== 0x4949 && byteOrder !== 0x4D4D) {
+          throw new Error('Invalid TIFF byte order');
+        }
         const le = byteOrder === 0x4949;
 
         const ifd0 = tiffStart + view.getUint32(tiffStart + 4, le);
@@ -223,7 +253,9 @@ export async function extractExif(buffer: ArrayBuffer): Promise<ParsedExif> {
         }
 
         const total = Object.keys(camera).length + Object.keys(exposure).length + Object.keys(gps).length;
-        if (total === 0) throw new Error('EXIF segment found but contained no readable tags');
+        if (total === 0) {
+          throw new Error('EXIF segment found but contained no readable tags');
+        }
 
         return { camera, exposure, gps };
       }

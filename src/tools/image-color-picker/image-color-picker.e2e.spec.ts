@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Tool - Image color picker', () => {
   test.beforeEach(async ({ page }) => {

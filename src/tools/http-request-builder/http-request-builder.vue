@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useCopy } from '@/composable/copy';
 import type { BodyType, HttpMethod, KV } from './http-request-builder.service';
 import { buildUrl, toAxios, toCurl, toFetch, toGo, toPhpCurl, toPython } from './http-request-builder.service';
+import { useCopy } from '@/composable/copy';
 
 const method = ref<HttpMethod>('GET');
 const url = ref('https://api.example.com/users');
@@ -18,8 +18,13 @@ const activeSection = ref<'params' | 'headers' | 'body'>('params');
 
 const methods: HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 const methodColors: Record<string, string> = {
-  GET: '#16a34a', POST: '#2563eb', PUT: '#ca8a04',
-  PATCH: '#9333ea', DELETE: '#dc2626', HEAD: '#0891b2', OPTIONS: '#6b7280',
+  GET: '#16a34a',
+  POST: '#2563eb',
+  PUT: '#ca8a04',
+  PATCH: '#9333ea',
+  DELETE: '#dc2626',
+  HEAD: '#0891b2',
+  OPTIONS: '#6b7280',
 };
 
 const codeTabs = [
@@ -38,8 +43,14 @@ const bodyTypes = [
   { label: 'Text', value: 'text' },
 ];
 
-function addRow(list: KV[]) { list.push({ key: '', value: '', enabled: true }); }
-function removeRow(list: KV[], i: number) { if (list.length > 1) list.splice(i, 1); }
+function addRow(list: KV[]) {
+  list.push({ key: '', value: '', enabled: true });
+}
+function removeRow(list: KV[], i: number) {
+  if (list.length > 1) {
+    list.splice(i, 1);
+  }
+}
 
 const cfg = computed(() => ({
   method: method.value,
@@ -56,11 +67,21 @@ const resolvedUrl = computed(() => buildUrl(url.value, params.value));
 
 const code = computed(() => {
   const c = cfg.value;
-  if (codeTab.value === 'curl') return toCurl(c);
-  if (codeTab.value === 'fetch') return toFetch(c);
-  if (codeTab.value === 'axios') return toAxios(c);
-  if (codeTab.value === 'python') return toPython(c);
-  if (codeTab.value === 'php') return toPhpCurl(c);
+  if (codeTab.value === 'curl') {
+    return toCurl(c);
+  }
+  if (codeTab.value === 'fetch') {
+    return toFetch(c);
+  }
+  if (codeTab.value === 'axios') {
+    return toAxios(c);
+  }
+  if (codeTab.value === 'python') {
+    return toPython(c);
+  }
+  if (codeTab.value === 'php') {
+    return toPhpCurl(c);
+  }
   return toGo(c);
 });
 
@@ -77,7 +98,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
       <div class="hrb-left">
         <!-- Method + URL -->
         <c-card mb-3>
-          <div flex gap-2 items-center>
+          <div flex items-center gap-2>
             <div class="method-select">
               <button
                 v-for="m in methods"
@@ -92,7 +113,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
             </div>
           </div>
           <div mt-2>
-            <c-input-text v-model:value="url" font-mono placeholder="https://api.example.com/endpoint" raw-text />
+            <c-input-text v-model:value="url" placeholder="https://api.example.com/endpoint" raw-text font-mono />
           </div>
           <div v-if="resolvedUrl !== url" mt-1 text-xs font-mono op-40 style="word-break:break-all">
             → {{ resolvedUrl }}
@@ -101,7 +122,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
 
         <!-- Tabs: Params / Headers / Body -->
         <c-card>
-          <div flex gap-1 mb-3>
+          <div mb-3 flex gap-1>
             <button
               v-for="sec in (['params', 'headers', 'body'] as const)"
               :key="sec"
@@ -118,7 +139,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
 
           <!-- Params -->
           <div v-if="activeSection === 'params'">
-            <div v-for="(row, i) in params" :key="i" flex gap-2 items-center mb-2>
+            <div v-for="(row, i) in params" :key="i" mb-2 flex items-center gap-2>
               <n-switch v-model:value="row.enabled" size="small" />
               <c-input-text v-model:value="row.key" placeholder="Key" raw-text style="flex:1" />
               <c-input-text v-model:value="row.value" placeholder="Value" raw-text style="flex:1" />
@@ -133,7 +154,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
 
           <!-- Headers -->
           <div v-if="activeSection === 'headers'">
-            <div v-for="(row, i) in headers" :key="i" flex gap-2 items-center mb-2>
+            <div v-for="(row, i) in headers" :key="i" mb-2 flex items-center gap-2>
               <n-switch v-model:value="row.enabled" size="small" />
               <c-input-text v-model:value="row.key" placeholder="Header name" raw-text style="flex:1" />
               <c-input-text v-model:value="row.value" placeholder="Value" raw-text style="flex:1" />
@@ -148,7 +169,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
 
           <!-- Body -->
           <div v-if="activeSection === 'body'">
-            <div flex gap-2 mb-3>
+            <div mb-3 flex gap-2>
               <button
                 v-for="bt in bodyTypes"
                 :key="bt.value"
@@ -161,13 +182,13 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
             </div>
 
             <div v-if="bodyType === 'json'">
-              <c-input-text v-model:value="bodyJson" multiline :rows="8" font-mono raw-text placeholder="{}" />
+              <c-input-text v-model:value="bodyJson" :rows="8" multiline raw-text font-mono placeholder="{}" />
             </div>
             <div v-else-if="bodyType === 'text'">
-              <c-input-text v-model:value="bodyText" multiline :rows="8" font-mono raw-text placeholder="Plain text body" />
+              <c-input-text v-model:value="bodyText" :rows="8" multiline raw-text font-mono placeholder="Plain text body" />
             </div>
             <div v-else-if="bodyType === 'form'">
-              <div v-for="(row, i) in bodyForm" :key="i" flex gap-2 items-center mb-2>
+              <div v-for="(row, i) in bodyForm" :key="i" mb-2 flex items-center gap-2>
                 <n-switch v-model:value="row.enabled" size="small" />
                 <c-input-text v-model:value="row.key" placeholder="Key" raw-text style="flex:1" />
                 <c-input-text v-model:value="row.value" placeholder="Value" raw-text style="flex:1" />
@@ -179,7 +200,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
                 + Add
               </c-button>
             </div>
-            <div v-else op-40 text-sm>
+            <div v-else text-sm op-40>
               No body
             </div>
           </div>
@@ -189,7 +210,7 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
       <!-- Right: generated code -->
       <div class="hrb-right">
         <c-card style="height: 100%">
-          <div flex gap-2 flex-wrap mb-3>
+          <div mb-3 flex flex-wrap gap-2>
             <button
               v-for="t in codeTabs"
               :key="t.value"
@@ -203,14 +224,13 @@ const { copy, isJustCopied } = useCopy({ source: code, text: 'Copied!' });
 
           <c-input-text
             :value="code"
-            multiline
+
             :rows="24"
-            font-mono
-            readonly
-            raw-text
+
+            multiline readonly raw-text font-mono
           />
 
-          <div flex justify-end mt-2>
+          <div mt-2 flex justify-end>
             <c-button @click="copy()">
               {{ isJustCopied ? 'Copied!' : 'Copy' }}
             </c-button>

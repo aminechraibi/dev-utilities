@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { type ParsedSemver, compareSemver, parseSemver, satisfiesRange } from './semver-comparator.service';
 import { withDefaultOnError } from '@/utils/defaults';
-import { parseSemver, compareSemver, satisfiesRange, type ParsedSemver } from './semver-comparator.service';
 
 const versionA = ref('1.2.3');
 const versionB = ref('1.3.0-alpha.1');
@@ -16,30 +16,46 @@ const parsedB = computed<ParsedSemver | null>(() =>
 );
 
 const compareResult = computed(() => {
-  if (!parsedA.value || !parsedB.value) return null;
+  if (!parsedA.value || !parsedB.value) {
+    return null;
+  }
   return withDefaultOnError(() => compareSemver(versionA.value, versionB.value), null);
 });
 
 const compareLabel = computed(() => {
-  if (compareResult.value === null) return '';
-  if (compareResult.value === 0) return `${versionA.value} == ${versionB.value}`;
-  if (compareResult.value < 0) return `${versionA.value} < ${versionB.value}`;
+  if (compareResult.value === null) {
+    return '';
+  }
+  if (compareResult.value === 0) {
+    return `${versionA.value} == ${versionB.value}`;
+  }
+  if (compareResult.value < 0) {
+    return `${versionA.value} < ${versionB.value}`;
+  }
   return `${versionA.value} > ${versionB.value}`;
 });
 
 const compareType = computed<'success' | 'warning' | 'info'>(() => {
-  if (compareResult.value === null) return 'info';
-  if (compareResult.value === 0) return 'success';
+  if (compareResult.value === null) {
+    return 'info';
+  }
+  if (compareResult.value === 0) {
+    return 'success';
+  }
   return 'warning';
 });
 
 const rangeResult = computed(() => {
-  if (!rangeVersion.value.trim() || !rangeInput.value.trim()) return null;
+  if (!rangeVersion.value.trim() || !rangeInput.value.trim()) {
+    return null;
+  }
   return withDefaultOnError(() => satisfiesRange(rangeVersion.value, rangeInput.value), null);
 });
 
 function parsedToItems(p: ParsedSemver | null) {
-  if (!p) return [];
+  if (!p) {
+    return [];
+  }
   return [
     { label: 'Major', value: String(p.major) },
     { label: 'Minor', value: String(p.minor) },
@@ -59,8 +75,8 @@ function parsedToItems(p: ParsedSemver | null) {
             v-model:value="versionA"
             label="Version A"
             placeholder="e.g. 1.2.3"
-            font-mono
-            autofocus
+
+            autofocus font-mono
           />
           <c-key-value-list v-if="parsedA" mt-3 :items="parsedToItems(parsedA)" />
           <c-alert v-else-if="versionA" type="error" mt-2>
@@ -94,20 +110,20 @@ function parsedToItems(p: ParsedSemver | null) {
     </c-card>
 
     <c-card title="Range Check">
-      <div flex gap-3 mb-3>
+      <div mb-3 flex gap-3>
         <c-input-text
           v-model:value="rangeVersion"
           label="Version"
           placeholder="e.g. 1.5.2"
-          font-mono
-          flex-1
+
+          flex-1 font-mono
         />
         <c-input-text
           v-model:value="rangeInput"
           label="Range"
           placeholder="e.g. ^1.0.0, ~2.1.0, >=1.0.0"
-          font-mono
-          flex-1
+
+          flex-1 font-mono
         />
       </div>
       <div v-if="rangeResult !== null" flex justify-center>

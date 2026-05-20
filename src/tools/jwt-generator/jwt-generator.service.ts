@@ -20,10 +20,10 @@ export function generateJwt({
   secret,
   algorithm,
 }: {
-  header: string;
-  payload: string;
-  secret: string;
-  algorithm: JwtAlgorithm;
+  header: string
+  payload: string
+  secret: string
+  algorithm: JwtAlgorithm
 }): string {
   const headerObj = JSON.parse(header);
   headerObj.alg = algorithm;

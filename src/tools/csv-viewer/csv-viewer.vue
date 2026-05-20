@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { parseCsv, detectDelimiter } from './csv-viewer.service';
+import { detectDelimiter, parseCsv } from './csv-viewer.service';
 
 const csvInput = useStorage('csv-viewer--input', 'Name,Age,City\nAlice,30,New York\nBob,25,London\nCharlie,35,Paris');
 const hasHeader = useStorage('csv-viewer--has-header', true);
@@ -43,19 +43,27 @@ const tableData = computed(() =>
 );
 
 const detectedDelimiterLabel = computed(() => {
-  if (delimiterChoice.value !== 'auto') return null;
+  if (delimiterChoice.value !== 'auto') {
+    return null;
+  }
   const d = resolvedDelimiter.value;
-  if (d === '\t') return 'Tab';
-  if (d === ';') return 'Semicolon';
-  if (d === '|') return 'Pipe';
+  if (d === '\t') {
+    return 'Tab';
+  }
+  if (d === ';') {
+    return 'Semicolon';
+  }
+  if (d === '|') {
+    return 'Pipe';
+  }
   return 'Comma';
 });
 </script>
 
 <template>
   <c-card title="CSV Input">
-    <div flex gap-3 mb-3 style="flex-wrap: wrap; align-items: center">
-      <div flex gap-2 items-center>
+    <div mb-3 flex gap-3 style="flex-wrap: wrap; align-items: center">
+      <div flex items-center gap-2>
         <span text-sm op-70>Delimiter:</span>
         <c-select
           v-model:value="delimiterChoice"
@@ -66,7 +74,7 @@ const detectedDelimiterLabel = computed(() => {
           Detected: {{ detectedDelimiterLabel }}
         </n-tag>
       </div>
-      <div flex gap-2 items-center>
+      <div flex items-center gap-2>
         <span text-sm op-70>Has header row:</span>
         <n-switch v-model:value="hasHeader" />
       </div>
@@ -74,16 +82,16 @@ const detectedDelimiterLabel = computed(() => {
 
     <c-input-text
       v-model:value="csvInput"
-      multiline
+
       :rows="8"
       placeholder="Paste your CSV data here..."
-      font-mono
-      raw-text
+
+      multiline raw-text font-mono
     />
   </c-card>
 
   <c-card v-if="csvInput.trim()">
-    <div flex gap-3 mb-3 items-center>
+    <div mb-3 flex items-center gap-3>
       <n-tag type="info">
         {{ parsed.rows.length }} rows
       </n-tag>
@@ -103,7 +111,7 @@ const detectedDelimiterLabel = computed(() => {
         striped
       />
     </div>
-    <div v-else op-50 text-center py-4>
+    <div v-else py-4 text-center op-50>
       No data to display
     </div>
   </c-card>

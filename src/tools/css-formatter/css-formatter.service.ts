@@ -1,6 +1,6 @@
 export function formatCss(css: string): string {
   // Remove existing extra whitespace
-  let result = css.trim();
+  const result = css.trim();
 
   // Remove CSS comments first, then reformat
   // Actually keep comments - just reformat
@@ -20,7 +20,7 @@ export function formatCss(css: string): string {
       // Opening brace stays on same line as selector
       const lastLine = lines[lines.length - 1];
       if (lastLine !== undefined) {
-        lines[lines.length - 1] = lastLine + ' {';
+        lines[lines.length - 1] = `${lastLine} {`;
       }
       else {
         lines.push('{');
@@ -50,7 +50,9 @@ export function formatCss(css: string): string {
   return lines
     .filter((line, i, arr) => {
       // Remove consecutive empty lines
-      if (line.trim() === '' && arr[i - 1]?.trim() === '') return false;
+      if (line.trim() === '' && arr[i - 1]?.trim() === '') {
+        return false;
+      }
       return true;
     })
     .join('\n')

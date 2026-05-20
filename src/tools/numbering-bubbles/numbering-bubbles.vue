@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useCopy } from '@/composable/copy';
+import { computed, ref } from 'vue';
 import { generateBubbleSvg } from './numbering-bubbles.service';
 import type { BubbleShape } from './numbering-bubbles.service';
+import { useCopy } from '@/composable/copy';
 import { textToBase64 } from '@/utils/base64';
 import { useDownloadFileFromBase64 } from '@/composable/downloadBase64';
 
@@ -56,7 +56,7 @@ const { download: downloadAll } = useDownloadFileFromBase64({ source: allSvgsBas
 
 const { copy } = useCopy({ createToast: true });
 
-function copyBubbleSvg(svg: string) {
+function _copyBubbleSvg(svg: string) {
   copy(svg);
 }
 
@@ -93,11 +93,15 @@ function crc32(data: Uint8Array): number {
   const table = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
     let c = i;
-    for (let j = 0; j < 8; j++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+    for (let j = 0; j < 8; j++) {
+      c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+    }
     table[i] = c;
   }
   let crc = 0xFFFFFFFF;
-  for (let i = 0; i < data.length; i++) crc = table[(crc ^ data[i]) & 0xFF]! ^ (crc >>> 8);
+  for (let i = 0; i < data.length; i++) {
+    crc = table[(crc ^ data[i]) & 0xFF]! ^ (crc >>> 8);
+  }
   return (crc ^ 0xFFFFFFFF) >>> 0;
 }
 
@@ -173,8 +177,14 @@ function buildZip(files: { name: string; data: Uint8Array }[]): Uint8Array {
   const total = offset + cdSize + 22;
   const out = new Uint8Array(total);
   let pos = 0;
-  for (const l of locals) { out.set(l, pos); pos += l.length; }
-  for (const c of centrals) { out.set(c, pos); pos += c.length; }
+  for (const l of locals) {
+    out.set(l, pos);
+    pos += l.length;
+  }
+  for (const c of centrals) {
+    out.set(c, pos);
+    pos += c.length;
+  }
   out.set(eocd, pos);
   return out;
 }
@@ -182,7 +192,9 @@ function buildZip(files: { name: string; data: Uint8Array }[]): Uint8Array {
 const downloadPngStatus = ref<'idle' | 'busy' | 'ok' | 'err'>('idle');
 
 async function downloadAllAsPng() {
-  if (downloadPngStatus.value === 'busy') return;
+  if (downloadPngStatus.value === 'busy') {
+    return;
+  }
   downloadPngStatus.value = 'busy';
   try {
     const px = size.value;
@@ -202,8 +214,12 @@ async function downloadAllAsPng() {
     URL.revokeObjectURL(url);
     downloadPngStatus.value = 'ok';
   }
-  catch { downloadPngStatus.value = 'err'; }
-  setTimeout(() => { downloadPngStatus.value = 'idle'; }, 2000);
+  catch {
+    downloadPngStatus.value = 'err';
+  }
+  setTimeout(() => {
+    downloadPngStatus.value = 'idle';
+  }, 2000);
 }
 
 const copyBubblePngStatus = ref<Record<number, 'idle' | 'ok' | 'err'>>({});
@@ -255,7 +271,7 @@ async function copyBubblePng(num: number, svg: string) {
     </c-card>
 
     <c-card mb-3>
-      <div flex justify-between items-center mb-3>
+      <div mb-3 flex items-center justify-between>
         <div font-bold>
           Preview ({{ bubbles.length }} bubbles)
         </div>

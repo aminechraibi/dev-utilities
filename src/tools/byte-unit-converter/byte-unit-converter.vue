@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import _ from 'lodash';
 import {
-  bytesToKB, bytesToMB, bytesToGB, bytesToTB, bytesToPB,
-  kbToBytes, mbToBytes, gbToBytes, tbToBytes, pbToBytes,
-  bytesToKiB, bytesToMiB, bytesToGiB, bytesToTiB, bytesToPiB,
-  kibToBytes, mibToBytes, gibToBytes, tibToBytes, pibToBytes,
+  bytesToGB, bytesToGiB, bytesToKB, bytesToKiB, bytesToMB,
+  bytesToMiB, bytesToPB, bytesToPiB, bytesToTB, bytesToTiB,
+  gbToBytes, gibToBytes, kbToBytes, kibToBytes, mbToBytes,
+  mibToBytes, pbToBytes, pibToBytes, tbToBytes, tibToBytes,
 } from './byte-unit-converter.service';
 
 type UnitKey = 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'KiB' | 'MiB' | 'GiB' | 'TiB' | 'PiB';

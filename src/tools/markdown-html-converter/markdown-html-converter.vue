@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useCopy } from '@/composable/copy';
 import { htmlToMd, mdToHtml } from './markdown-html-converter.service';
+import { useCopy } from '@/composable/copy';
 
 const direction = ref<'md-to-html' | 'html-to-md'>('md-to-html');
 
@@ -42,7 +42,9 @@ const HTML_EXAMPLE = `<h1>Hello World</h1>
 const input = ref(MD_EXAMPLE);
 
 const output = computed(() => {
-  if (!input.value.trim()) return '';
+  if (!input.value.trim()) {
+    return '';
+  }
   try {
     return direction.value === 'md-to-html'
       ? mdToHtml(input.value)
@@ -57,7 +59,9 @@ const inputLabel = computed(() => direction.value === 'md-to-html' ? 'Markdown' 
 const outputLabel = computed(() => direction.value === 'md-to-html' ? 'HTML' : 'Markdown');
 
 function setDirection(dir: 'md-to-html' | 'html-to-md') {
-  if (dir === direction.value) return;
+  if (dir === direction.value) {
+    return;
+  }
   direction.value = dir;
   input.value = dir === 'md-to-html' ? MD_EXAMPLE : HTML_EXAMPLE;
 }
@@ -73,7 +77,7 @@ const { copy, isJustCopied } = useCopy({ source: output, text: 'Copied!' });
 
 <template>
   <div class="mhc-root">
-    <div flex gap-2 items-center mb-3>
+    <div mb-3 flex items-center gap-2>
       <span class="dir-badge" :class="{ active: direction === 'md-to-html' }" @click="setDirection('md-to-html')">Markdown → HTML</span>
       <button class="swap-btn" title="Swap direction" @click="swap">
         ⇄
@@ -85,10 +89,10 @@ const { copy, isJustCopied } = useCopy({ source: output, text: 'Copied!' });
       <c-card :title="inputLabel" style="flex: 1 1 0; min-width: 0;">
         <c-input-text
           v-model:value="input"
-          multiline
+
           :rows="22"
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
           :placeholder="`Paste ${inputLabel} here...`"
         />
       </c-card>
@@ -96,13 +100,12 @@ const { copy, isJustCopied } = useCopy({ source: output, text: 'Copied!' });
       <c-card :title="outputLabel" style="flex: 1 1 0; min-width: 0;">
         <c-input-text
           :value="output"
-          multiline
+
           :rows="22"
-          font-mono
-          readonly
-          raw-text
+
+          multiline readonly raw-text font-mono
         />
-        <div flex justify-end mt-2>
+        <div mt-2 flex justify-end>
           <c-button @click="copy()">
             {{ isJustCopied ? 'Copied!' : 'Copy' }}
           </c-button>

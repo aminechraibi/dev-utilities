@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
 import { minifyHtml } from './html-minifier.service';
+import { useCopy } from '@/composable/copy';
 
 const inputHtml = ref('<html>\n  <!-- Page comment -->\n  <body>\n    <h1>Hello   World</h1>\n    <p>This is a   paragraph.</p>\n  </body>\n</html>');
 
@@ -17,7 +17,9 @@ const outputHtml = computed(() =>
 const inputSize = computed(() => new TextEncoder().encode(inputHtml.value).byteLength);
 const outputSize = computed(() => new TextEncoder().encode(outputHtml.value).byteLength);
 const savings = computed(() => {
-  if (inputSize.value === 0) return '0';
+  if (inputSize.value === 0) {
+    return '0';
+  }
   return (((inputSize.value - outputSize.value) / inputSize.value) * 100).toFixed(1);
 });
 
@@ -35,16 +37,28 @@ const { copy } = useCopy({ source: outputHtml, text: 'Minified HTML copied to cl
       </n-form-item>
       <div style="display:flex;gap:24px;margin-left:auto">
         <div text-center>
-          <div text-sm op-60>Input</div>
-          <div font-mono>{{ inputSize }} bytes</div>
+          <div text-sm op-60>
+            Input
+          </div>
+          <div font-mono>
+            {{ inputSize }} bytes
+          </div>
         </div>
         <div text-center>
-          <div text-sm op-60>Output</div>
-          <div font-mono>{{ outputSize }} bytes</div>
+          <div text-sm op-60>
+            Output
+          </div>
+          <div font-mono>
+            {{ outputSize }} bytes
+          </div>
         </div>
         <div text-center>
-          <div text-sm op-60>Savings</div>
-          <div font-mono>{{ savings }}%</div>
+          <div text-sm op-60>
+            Savings
+          </div>
+          <div font-mono>
+            {{ savings }}%
+          </div>
         </div>
       </div>
     </div>
@@ -54,10 +68,10 @@ const { copy } = useCopy({ source: outputHtml, text: 'Minified HTML copied to cl
         <c-input-text
           v-model:value="inputHtml"
           placeholder="Paste your HTML here..."
-          multiline
+
           :rows="20"
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
         />
       </c-card>
 
@@ -65,13 +79,12 @@ const { copy } = useCopy({ source: outputHtml, text: 'Minified HTML copied to cl
         <c-input-text
           :value="outputHtml"
           placeholder="Minified output will appear here..."
-          multiline
+
           :rows="20"
-          font-mono
-          readonly
-          raw-text
+
+          multiline readonly raw-text font-mono
         />
-        <div flex justify-end mt-2>
+        <div mt-2 flex justify-end>
           <c-button size="small" @click="copy()">
             Copy
           </c-button>

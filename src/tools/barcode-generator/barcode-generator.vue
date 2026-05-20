@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
 import { generateCode128Svg } from './barcode-generator.service';
+import { useCopy } from '@/composable/copy';
 
 const text = ref('Hello World 123');
 const barWidth = ref(2);
@@ -38,7 +38,7 @@ function download() {
     <c-alert v-if="error" type="error">
       {{ error }}
     </c-alert>
-    <div flex gap-4 flex-wrap items-center>
+    <div flex flex-wrap items-center gap-4>
       <div flex flex-col gap-1>
         <label text-sm op-70>Bar width: {{ barWidth }}px</label>
         <n-slider v-model:value="barWidth" :min="1" :max="4" :step="1" style="width:120px" />
@@ -53,7 +53,7 @@ function download() {
         </n-checkbox>
       </div>
     </div>
-    <div v-if="svgOutput" flex justify-center p-4 bg-white rounded-lg v-html="svgOutput" />
+    <div v-if="svgOutput" flex justify-center rounded-lg bg-white p-4 v-html="svgOutput" />
     <div flex justify-center gap-3>
       <c-button :disabled="!svgOutput" @click="copy()">
         Copy SVG

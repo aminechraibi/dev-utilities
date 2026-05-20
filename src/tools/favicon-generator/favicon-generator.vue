@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { renderFaviconToCanvas, canvasToPngDataUrl } from './favicon-generator.service';
+import { onMounted, ref, watch } from 'vue';
+import { renderFaviconToCanvas } from './favicon-generator.service';
 
 const faviconText = ref('IT');
 const bgColor = ref('#4a90d9');
@@ -85,7 +85,7 @@ function downloadAllSizes() {
     </c-card>
 
     <c-card mb-3>
-      <div flex justify-between items-center mb-3>
+      <div mb-3 flex items-center justify-between>
         <div font-bold>
           Preview
         </div>
@@ -94,7 +94,7 @@ function downloadAllSizes() {
         </c-button>
       </div>
 
-      <div flex flex-wrap gap-4 items-end>
+      <div flex flex-wrap items-end gap-4>
         <div
           v-for="(size, idx) in sizes"
           :key="size"

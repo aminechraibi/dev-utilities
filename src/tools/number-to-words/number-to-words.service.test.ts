@@ -1,5 +1,5 @@
-import { expect, describe, it } from 'vitest';
-import { numberToWords, numberToOrdinal } from './number-to-words.service';
+import { describe, expect, it } from 'vitest';
+import { numberToOrdinal, numberToWords } from './number-to-words.service';
 
 describe('number-to-words', () => {
   describe('numberToWords', () => {

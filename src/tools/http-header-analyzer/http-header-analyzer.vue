@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseHeaders, type ParsedHeader } from './http-header-analyzer.service';
+import { type ParsedHeader, parseHeaders } from './http-header-analyzer.service';
 
 const EXAMPLE_HEADERS = `HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
@@ -35,17 +35,17 @@ function loadExample() {
 }
 
 const categoryColors: Record<string, string> = {
-  'Security': 'error',
-  'CORS': 'warning',
-  'Caching': 'info',
-  'Content': 'success',
-  'Authentication': 'error',
-  'Cookies': 'warning',
-  'Server': 'default',
-  'Connection': 'default',
-  'Request': 'default',
-  'Redirect': 'info',
-  'Other': 'default',
+  Security: 'error',
+  CORS: 'warning',
+  Caching: 'info',
+  Content: 'success',
+  Authentication: 'error',
+  Cookies: 'warning',
+  Server: 'default',
+  Connection: 'default',
+  Request: 'default',
+  Redirect: 'info',
+  Other: 'default',
 };
 </script>
 
@@ -54,15 +54,14 @@ const categoryColors: Record<string, string> = {
     <c-card>
       <c-input-text
         v-model:value="rawHeaders"
-        multiline
-        raw-text
+
         rows="10"
         label="Raw HTTP headers"
         placeholder="Paste your HTTP response headers here..."
-        font-mono
-        autofocus
+
+        multiline raw-text autofocus font-mono
       />
-      <div flex justify-center mt-3>
+      <div mt-3 flex justify-center>
         <c-button @click="loadExample">
           Load example
         </c-button>
@@ -76,16 +75,16 @@ const categoryColors: Record<string, string> = {
             v-for="header in headers"
             :key="header.name"
             class="header-item"
-            p-3
-            rounded
+
+            rounded p-3
           >
-            <div flex items-center gap-2 mb-1>
+            <div mb-1 flex items-center gap-2>
               <span font-bold font-mono>{{ header.name }}</span>
               <n-tag :type="categoryColors[header.category] as any" size="small">
                 {{ header.category }}
               </n-tag>
             </div>
-            <div font-mono text-sm op-80 mb-1 style="word-break: break-all;">
+            <div mb-1 text-sm font-mono op-80 style="word-break: break-all;">
               {{ header.value }}
             </div>
             <div text-sm op-60>

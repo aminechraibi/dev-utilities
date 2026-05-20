@@ -1,7 +1,7 @@
 export interface Duration {
-  hours: number;
-  minutes: number;
-  seconds: number;
+  hours: number
+  minutes: number
+  seconds: number
 }
 
 export function addDurations(a: Duration, b: Duration): Duration {

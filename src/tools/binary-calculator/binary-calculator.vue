@@ -33,14 +33,18 @@ const bBinary = computed(() => toBinary(inputB.value, bitWidth.value));
 
 function parseBinaryInput(val: string): number {
   const clean = val.replace(/[^01]/g, '').slice(0, bitWidth.value);
-  return clean ? parseInt(clean, 2) : 0;
+  return clean ? Number.parseInt(clean, 2) : 0;
 }
 
 const inputABin = ref(toBinary(inputA.value, 8));
 const inputBBin = ref(toBinary(inputB.value, 8));
 
-watch(inputA, (v) => { inputABin.value = toBinary(v, bitWidth.value); });
-watch(inputB, (v) => { inputBBin.value = toBinary(v, bitWidth.value); });
+watch(inputA, (v) => {
+  inputABin.value = toBinary(v, bitWidth.value);
+});
+watch(inputB, (v) => {
+  inputBBin.value = toBinary(v, bitWidth.value);
+});
 watch(bitWidth, () => {
   inputABin.value = toBinary(inputA.value, bitWidth.value);
   inputBBin.value = toBinary(inputB.value, bitWidth.value);
@@ -75,7 +79,7 @@ const bitGroups = computed(() => {
 <template>
   <div flex flex-col gap-3>
     <c-card title="Inputs">
-      <div flex gap-3 mb-3>
+      <div mb-3 flex gap-3>
         <div flex-1>
           <div mb-1 text-sm font-semibold>
             Value A
@@ -111,7 +115,7 @@ const bitGroups = computed(() => {
         </div>
       </div>
 
-      <div flex gap-3 items-center>
+      <div flex items-center gap-3>
         <div flex-1>
           <div mb-1 text-sm font-semibold>
             Operation
@@ -131,16 +135,28 @@ const bitGroups = computed(() => {
       <table class="result-table">
         <tbody>
           <tr>
-            <td class="res-label">Decimal</td>
-            <td class="res-value">{{ resultDecimal }}</td>
+            <td class="res-label">
+              Decimal
+            </td>
+            <td class="res-value">
+              {{ resultDecimal }}
+            </td>
           </tr>
           <tr>
-            <td class="res-label">Hexadecimal</td>
-            <td class="res-value">0x{{ resultHex }}</td>
+            <td class="res-label">
+              Hexadecimal
+            </td>
+            <td class="res-value">
+              0x{{ resultHex }}
+            </td>
           </tr>
           <tr>
-            <td class="res-label">Binary</td>
-            <td class="res-value">{{ resultBinary }}</td>
+            <td class="res-label">
+              Binary
+            </td>
+            <td class="res-value">
+              {{ resultBinary }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -159,17 +175,16 @@ const bitGroups = computed(() => {
           <div
             v-for="cell in group"
             :key="cell.index"
-            w-8 h-8
-            flex items-center justify-center
-            rounded text-sm font-mono font-bold
+
+            h-8 w-8 flex items-center justify-center rounded text-sm font-bold font-mono
             :class="cell.bit === '1' ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 op-50'"
           >
             {{ cell.bit }}
           </div>
-          <div v-if="gi < bitGroups.length - 1" w-px self-stretch bg-gray-300 mx-1 />
+          <div v-if="gi < bitGroups.length - 1" mx-1 w-px self-stretch bg-gray-300 />
         </div>
       </div>
-      <div flex flex-wrap gap-2 mt-1>
+      <div mt-1 flex flex-wrap gap-2>
         <div
           v-for="i in bitWidth"
           :key="i"
@@ -181,17 +196,17 @@ const bitGroups = computed(() => {
     </c-card>
 
     <c-card title="Operation breakdown">
-      <div font-mono text-sm>
-        <div v-if="!singleOperand" flex gap-2 items-center mb-1>
+      <div text-sm font-mono>
+        <div v-if="!singleOperand" mb-1 flex items-center gap-2>
           <span w-12 op-60>A</span>
           <span>{{ aBinary }}</span>
         </div>
-        <div v-if="!singleOperand" flex gap-2 items-center mb-1>
+        <div v-if="!singleOperand" mb-1 flex items-center gap-2>
           <span w-12 op-60>B</span>
           <span>{{ bBinary }}</span>
         </div>
         <n-divider v-if="!singleOperand" style="margin: 6px 0" />
-        <div flex gap-2 items-center>
+        <div flex items-center gap-2>
           <span w-12 text-primary font-bold>= </span>
           <span>{{ resultBinary }}</span>
         </div>

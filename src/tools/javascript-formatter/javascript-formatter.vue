@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
 import { formatJavaScript } from './javascript-formatter.service';
+import { useCopy } from '@/composable/copy';
 
 const inputCode = ref(`function greet(name){
 const message="Hello, "+name+"!";
@@ -24,7 +24,7 @@ const { copy } = useCopy({ source: outputCode, text: 'Formatted code copied to c
 <template>
   <div>
     <c-card mb-3>
-      <div flex gap-4 items-center>
+      <div flex items-center gap-4>
         <c-select
           v-model:value="indentSize"
           label="Indent size"
@@ -37,7 +37,7 @@ const { copy } = useCopy({ source: outputCode, text: 'Formatted code copied to c
       </div>
     </c-card>
 
-    <div flex gap-3 mb-3>
+    <div mb-3 flex gap-3>
       <c-input-text
         v-model:value="inputCode"
         label="JavaScript / TypeScript input"
@@ -51,10 +51,10 @@ const { copy } = useCopy({ source: outputCode, text: 'Formatted code copied to c
         :value="outputCode"
         label="Formatted code"
         placeholder="Formatted output will appear here..."
-        multiline
+
         rows="16"
-        font-mono
-        readonly
+
+        multiline readonly font-mono
         style="flex: 1"
       />
     </div>

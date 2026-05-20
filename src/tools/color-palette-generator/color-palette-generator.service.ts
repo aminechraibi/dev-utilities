@@ -1,12 +1,12 @@
 import { colord } from 'colord';
 
 export interface Palettes {
-  monochromatic: string[];
-  complementary: string[];
-  triadic: string[];
-  analogous: string[];
-  splitComplementary: string[];
-  tetradic: string[];
+  monochromatic: string[]
+  complementary: string[]
+  triadic: string[]
+  analogous: string[]
+  splitComplementary: string[]
+  tetradic: string[]
 }
 
 export function generatePalettes(hex: string): Palettes {
@@ -91,7 +91,9 @@ export function hexToCmyk(hex: string): string {
   const G = g / 255;
   const B = b / 255;
   const k = 1 - Math.max(R, G, B);
-  if (k >= 1) return 'cmyk(0, 0, 0, 100)';
+  if (k >= 1) {
+    return 'cmyk(0, 0, 0, 100)';
+  }
   const c = Math.round(((1 - R - k) / (1 - k)) * 100);
   const m = Math.round(((1 - G - k) / (1 - k)) * 100);
   const y = Math.round(((1 - B - k) / (1 - k)) * 100);

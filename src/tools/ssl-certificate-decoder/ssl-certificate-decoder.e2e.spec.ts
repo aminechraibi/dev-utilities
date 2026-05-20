@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Tool - Ssl certificate decoder', () => {
   test.beforeEach(async ({ page }) => {

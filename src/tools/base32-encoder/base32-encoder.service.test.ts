@@ -1,5 +1,5 @@
-import { expect, describe, it } from 'vitest';
-import { encodeBase32, decodeBase32, encodeBase32Hex, decodeBase32Hex } from './base32-encoder.service';
+import { describe, expect, it } from 'vitest';
+import { decodeBase32, decodeBase32Hex, encodeBase32, encodeBase32Hex } from './base32-encoder.service';
 
 describe('base32-encoder', () => {
   describe('standard Base32 (RFC 4648)', () => {

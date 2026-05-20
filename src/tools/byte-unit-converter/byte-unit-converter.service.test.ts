@@ -1,5 +1,5 @@
-import { expect, describe, it } from 'vitest';
-import { bytesToKB, bytesToMB, bytesToGB, kbToBytes, bytesToKiB, bytesToMiB, kibToBytes } from './byte-unit-converter.service';
+import { describe, expect, it } from 'vitest';
+import { bytesToGB, bytesToKB, bytesToKiB, bytesToMB, bytesToMiB, kbToBytes, kibToBytes } from './byte-unit-converter.service';
 
 describe('byte-unit-converter', () => {
   describe('decimal conversions', () => {

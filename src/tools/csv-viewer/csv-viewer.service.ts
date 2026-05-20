@@ -1,6 +1,6 @@
 export interface CsvParseResult {
-  headers: string[];
-  rows: string[][];
+  headers: string[]
+  rows: string[][]
 }
 
 export function detectDelimiter(text: string): string {
@@ -10,8 +10,12 @@ export function detectDelimiter(text: string): string {
     ';': (firstLine.match(/;/g) ?? []).length,
     '\t': (firstLine.match(/\t/g) ?? []).length,
   };
-  if (counts['\t'] >= counts[','] && counts['\t'] >= counts[';']) return '\t';
-  if (counts[';'] >= counts[',']) return ';';
+  if (counts['\t'] >= counts[','] && counts['\t'] >= counts[';']) {
+    return '\t';
+  }
+  if (counts[';'] >= counts[',']) {
+    return ';';
+  }
   return ',';
 }
 

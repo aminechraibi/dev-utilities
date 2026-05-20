@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { getGitignoreTemplates, combineTemplates } from './gitignore-generator.service';
+import { computed, ref } from 'vue';
+import { combineTemplates, getGitignoreTemplates } from './gitignore-generator.service';
 import { useCopy } from '@/composable/copy';
 
 const templates = getGitignoreTemplates();
@@ -11,7 +11,9 @@ const searchQuery = ref('');
 
 const filteredKeys = computed(() => {
   const q = searchQuery.value.toLowerCase();
-  if (!q) return templateKeys;
+  if (!q) {
+    return templateKeys;
+  }
   return templateKeys.filter(k => k.toLowerCase().includes(q));
 });
 
@@ -43,7 +45,7 @@ function toggleAll() {
 <template>
   <div>
     <c-card title="Select templates" mb-3>
-      <div mb-3 flex gap-3 items-center>
+      <div mb-3 flex items-center gap-3>
         <c-input-text
           v-model:value="searchQuery"
           placeholder="Filter templates..."

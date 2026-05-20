@@ -1,14 +1,20 @@
 export interface DotenvEntry {
-  key: string;
-  value: string;
-  type: 'string' | 'number' | 'boolean' | 'empty';
-  line: number;
+  key: string
+  value: string
+  type: 'string' | 'number' | 'boolean' | 'empty'
+  line: number
 }
 
 function detectType(value: string): DotenvEntry['type'] {
-  if (value === '') return 'empty';
-  if (value === 'true' || value === 'false' || value === 'True' || value === 'False' || value === 'TRUE' || value === 'FALSE') return 'boolean';
-  if (!Number.isNaN(Number(value)) && value.trim() !== '') return 'number';
+  if (value === '') {
+    return 'empty';
+  }
+  if (value === 'true' || value === 'false' || value === 'True' || value === 'False' || value === 'TRUE' || value === 'FALSE') {
+    return 'boolean';
+  }
+  if (!Number.isNaN(Number(value)) && value.trim() !== '') {
+    return 'number';
+  }
   return 'string';
 }
 
@@ -35,7 +41,9 @@ function unquote(value: string): string {
 }
 
 export function parseDotenv(content: string): DotenvEntry[] {
-  if (!content.trim()) return [];
+  if (!content.trim()) {
+    return [];
+  }
 
   const rawLines = content.split('\n');
   const entries: DotenvEntry[] = [];
@@ -56,7 +64,9 @@ export function parseDotenv(content: string): DotenvEntry[] {
     const trimmed = line.trim();
 
     // Skip empty lines and comments
-    if (!trimmed || trimmed.startsWith('#')) continue;
+    if (!trimmed || trimmed.startsWith('#')) {
+      continue;
+    }
 
     // Parse KEY=VALUE
     const eqIndex = trimmed.indexOf('=');
@@ -75,7 +85,9 @@ export function parseDotenv(content: string): DotenvEntry[] {
     // Strip 'export' prefix
     key = key.replace(/^export\s+/, '').trim();
 
-    if (!key) continue;
+    if (!key) {
+      continue;
+    }
 
     const value = unquote(rawValue);
     const type = detectType(value);

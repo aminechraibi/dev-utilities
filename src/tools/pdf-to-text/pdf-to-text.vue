@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { extractTextFromPdfBuffer } from './pdf-to-text.service';
 import { useCopy } from '@/composable/copy';
 import { formatBytes } from '@/utils/convert';
-import { extractTextFromPdfBuffer } from './pdf-to-text.service';
 
 const status = ref<'idle' | 'loading' | 'done' | 'error'>('idle');
 const file = ref<File | null>(null);
@@ -58,7 +58,7 @@ function downloadText() {
     </c-card>
 
     <c-card v-if="file" mb-3>
-      <div flex gap-3 items-center>
+      <div flex items-center gap-3>
         <div font-bold>
           {{ file.name }}
         </div>
@@ -82,7 +82,7 @@ function downloadText() {
     </c-alert>
 
     <c-card v-if="status === 'done' && extractedText">
-      <div flex justify-between items-center mb-3>
+      <div mb-3 flex items-center justify-between>
         <div font-bold>
           Extracted text ({{ extractedText.length }} characters)
         </div>

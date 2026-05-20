@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { entriesToJson, entriesToShellExports, findDuplicateKeys, parseDotenv } from './dotenv-parser.service';
 import { useCopy } from '@/composable/copy';
-import { parseDotenv, findDuplicateKeys, entriesToJson, entriesToShellExports } from './dotenv-parser.service';
 
 const envInput = ref(`# App configuration
 APP_NAME="My Application"
@@ -30,7 +30,9 @@ const duplicates = computed(() => findDuplicateKeys(entries.value));
 const exportFormat = ref<'json' | 'shell'>('json');
 
 const exportOutput = computed(() => {
-  if (exportFormat.value === 'json') return entriesToJson(entries.value);
+  if (exportFormat.value === 'json') {
+    return entriesToJson(entries.value);
+  }
   return entriesToShellExports(entries.value);
 });
 
@@ -43,7 +45,7 @@ const typeTagType: Record<string, 'default' | 'info' | 'success' | 'warning' | '
   empty: 'warning',
 };
 
-const columns = computed(() => [
+const _columns = computed(() => [
   {
     title: 'Line',
     key: 'line',
@@ -76,16 +78,16 @@ const tableData = computed(() =>
   <c-card title=".env Input">
     <c-input-text
       v-model:value="envInput"
-      multiline
+
       :rows="12"
       placeholder="Paste your .env file content here..."
-      font-mono
-      raw-text
+
+      multiline raw-text font-mono
     />
   </c-card>
 
   <c-card v-if="envInput.trim()">
-    <div flex gap-3 mb-3 items-center style="flex-wrap: wrap">
+    <div mb-3 flex items-center gap-3 style="flex-wrap: wrap">
       <n-tag type="info">
         {{ entries.length }} variables
       </n-tag>
@@ -144,13 +146,13 @@ const tableData = computed(() =>
         </tbody>
       </n-table>
     </div>
-    <div v-else op-50 text-center py-3>
+    <div v-else py-3 text-center op-50>
       No variables found
     </div>
   </c-card>
 
   <c-card v-if="entries.length > 0" title="Export">
-    <div flex gap-3 mb-3 items-center>
+    <div mb-3 flex items-center gap-3>
       <span text-sm op-70>Format:</span>
       <n-radio-group v-model:value="exportFormat">
         <n-radio value="json">
@@ -164,14 +166,13 @@ const tableData = computed(() =>
 
     <c-input-text
       :value="exportOutput"
-      multiline
+
       :rows="8"
-      readonly
-      font-mono
-      raw-text
+
+      multiline readonly raw-text font-mono
     />
 
-    <div flex justify-center mt-3>
+    <div mt-3 flex justify-center>
       <c-button @click="copyExport()">
         Copy
       </c-button>

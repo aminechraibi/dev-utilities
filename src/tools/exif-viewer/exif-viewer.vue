@@ -71,44 +71,52 @@ const GPS_LABELS: Record<string, string> = {
 function formatValue(key: string, val: string): string {
   switch (key) {
     case 'ExposureTime': {
-      const n = parseFloat(val);
-      if (isNaN(n)) return val;
-      if (n >= 1) return `${n.toFixed(1)} s`;
+      const n = Number.parseFloat(val);
+      if (Number.isNaN(n)) {
+        return val;
+      }
+      if (n >= 1) {
+        return `${n.toFixed(1)} s`;
+      }
       return `1/${Math.round(1 / n)} s`;
     }
     case 'FNumber': {
-      const n = parseFloat(val);
-      return isNaN(n) ? val : `f/${n % 1 === 0 ? n.toFixed(0) : n.toFixed(1)}`;
+      const n = Number.parseFloat(val);
+      return Number.isNaN(n) ? val : `f/${n % 1 === 0 ? n.toFixed(0) : n.toFixed(1)}`;
     }
     case 'FocalLength': {
-      const n = parseFloat(val);
-      return isNaN(n) ? val : `${Math.round(n)} mm`;
+      const n = Number.parseFloat(val);
+      return Number.isNaN(n) ? val : `${Math.round(n)} mm`;
     }
     case 'FocalLengthIn35mmFilm':
       return `${val} mm`;
     case 'ExposureBiasValue': {
-      const n = parseFloat(val);
-      if (isNaN(n)) return val;
+      const n = Number.parseFloat(val);
+      if (Number.isNaN(n)) {
+        return val;
+      }
       return `${n >= 0 ? '+' : ''}${n.toFixed(1)} EV`;
     }
     case 'ApertureValue':
     case 'MaxApertureValue': {
-      const n = parseFloat(val);
-      if (isNaN(n)) return val;
-      const fnum = Math.pow(Math.SQRT2, n);
+      const n = Number.parseFloat(val);
+      if (Number.isNaN(n)) {
+        return val;
+      }
+      const fnum = Math.SQRT2 ** n;
       return `f/${fnum.toFixed(1)}`;
     }
     case 'SubjectDistance': {
-      const n = parseFloat(val);
-      return isNaN(n) ? val : `${n.toFixed(2)} m`;
+      const n = Number.parseFloat(val);
+      return Number.isNaN(n) ? val : `${n.toFixed(2)} m`;
     }
     case 'DigitalZoomRatio': {
-      const n = parseFloat(val);
-      return isNaN(n) ? val : n === 0 ? 'Not used' : `${n.toFixed(1)}×`;
+      const n = Number.parseFloat(val);
+      return Number.isNaN(n) ? val : n === 0 ? 'Not used' : `${n.toFixed(1)}×`;
     }
     case 'XResolution':
     case 'YResolution':
-      return `${Math.round(parseFloat(val))} dpi`;
+      return `${Math.round(Number.parseFloat(val))} dpi`;
     case 'PixelXDimension':
     case 'PixelYDimension':
       return `${val} px`;
@@ -132,26 +140,38 @@ function formatValue(key: string, val: string): string {
     case 'ColorSpace':
       return val === '1' ? 'sRGB' : val === '65535' ? 'Uncalibrated' : val;
     case 'Flash': {
-      const n = parseInt(val);
-      if (isNaN(n)) return val;
+      const n = Number.parseInt(val);
+      if (Number.isNaN(n)) {
+        return val;
+      }
       const fired = n & 0x01;
       const returnBit = (n >> 1) & 0x03;
       const mode = (n >> 3) & 0x03;
       const parts: string[] = [fired ? 'Flash fired' : 'No flash'];
-      if (fired && returnBit === 2) parts.push('no strobe return');
-      if (fired && returnBit === 3) parts.push('strobe return');
-      if (mode === 1) parts.push('compulsory');
-      if (mode === 2) parts.push('auto');
-      if ((n >> 5) & 1) parts.push('red-eye reduction');
+      if (fired && returnBit === 2) {
+        parts.push('no strobe return');
+      }
+      if (fired && returnBit === 3) {
+        parts.push('strobe return');
+      }
+      if (mode === 1) {
+        parts.push('compulsory');
+      }
+      if (mode === 2) {
+        parts.push('auto');
+      }
+      if ((n >> 5) & 1) {
+        parts.push('red-eye reduction');
+      }
       return parts.join(', ');
     }
     case 'ExposureProgram': {
       const modes = ['Not defined', 'Manual', 'Normal auto', 'Aperture-priority', 'Shutter-priority', 'Creative', 'Action', 'Portrait', 'Landscape'];
-      return modes[parseInt(val)] ?? val;
+      return modes[Number.parseInt(val)] ?? val;
     }
     case 'MeteringMode': {
       const modes = ['Unknown', 'Average', 'Center-weighted average', 'Spot', 'Multi-spot', 'Pattern', 'Partial'];
-      return modes[parseInt(val)] ?? val;
+      return modes[Number.parseInt(val)] ?? val;
     }
     case 'WhiteBalance':
       return val === '0' ? 'Auto' : val === '1' ? 'Manual' : val;
@@ -159,27 +179,38 @@ function formatValue(key: string, val: string): string {
       return val === '0' ? 'Auto' : val === '1' ? 'Manual' : val === '2' ? 'Auto bracket' : val;
     case 'LightSource': {
       const map: Record<string, string> = {
-        0: 'Unknown', 1: 'Daylight', 2: 'Fluorescent', 3: 'Tungsten (incandescent)', 4: 'Flash',
-        9: 'Fine weather', 10: 'Cloudy weather', 11: 'Shade', 12: 'Daylight fluorescent',
-        13: 'Day white fluorescent', 14: 'Cool white fluorescent', 15: 'White fluorescent',
-        17: 'Standard light A', 18: 'Standard light B', 19: 'Standard light C',
+        0: 'Unknown',
+        1: 'Daylight',
+        2: 'Fluorescent',
+        3: 'Tungsten (incandescent)',
+        4: 'Flash',
+        9: 'Fine weather',
+        10: 'Cloudy weather',
+        11: 'Shade',
+        12: 'Daylight fluorescent',
+        13: 'Day white fluorescent',
+        14: 'Cool white fluorescent',
+        15: 'White fluorescent',
+        17: 'Standard light A',
+        18: 'Standard light B',
+        19: 'Standard light C',
         255: 'Other',
       };
       return map[val] ?? val;
     }
     case 'SceneCaptureType': {
       const types = ['Standard', 'Landscape', 'Portrait', 'Night scene'];
-      return types[parseInt(val)] ?? val;
+      return types[Number.parseInt(val)] ?? val;
     }
     case 'GPSAltitudeRef':
       return val === '0' ? 'Above sea level' : 'Below sea level';
     case 'GPSAltitude': {
-      const n = parseFloat(val);
-      return isNaN(n) ? val : `${n.toFixed(1)} m`;
+      const n = Number.parseFloat(val);
+      return Number.isNaN(n) ? val : `${n.toFixed(1)} m`;
     }
     case 'ExifVersion': {
       try {
-        const bytes = val.split(' ').map(b => parseInt(b, 16));
+        const bytes = val.split(' ').map(b => Number.parseInt(b, 16));
         if (bytes.every(b => b >= 0x20 && b <= 0x7E)) {
           return bytes.map(b => String.fromCharCode(b)).join('');
         }
@@ -193,25 +224,35 @@ function formatValue(key: string, val: string): string {
 }
 
 function parseDMS(val: string): number | null {
-  const parts = val.split(',').map(s => parseFloat(s.trim()));
-  if (parts.length < 3 || parts.some(Number.isNaN)) return null;
+  const parts = val.split(',').map(s => Number.parseFloat(s.trim()));
+  if (parts.length < 3 || parts.some(Number.isNaN)) {
+    return null;
+  }
   return parts[0] + parts[1] / 60 + parts[2] / 3600;
 }
 
 function formatDMS(val: string, ref: string): string {
-  const parts = val.split(',').map(s => parseFloat(s.trim()));
-  if (parts.length < 3 || parts.some(Number.isNaN)) return val;
+  const parts = val.split(',').map(s => Number.parseFloat(s.trim()));
+  if (parts.length < 3 || parts.some(Number.isNaN)) {
+    return val;
+  }
   const [d, m, s] = parts;
   return `${Math.floor(d)}° ${Math.floor(m)}' ${s.toFixed(2)}" ${ref}`;
 }
 
 const gpsCoordinates = computed(() => {
-  if (!exifData.value?.gps) return null;
+  if (!exifData.value?.gps) {
+    return null;
+  }
   const { GPSLatitude, GPSLatitudeRef, GPSLongitude, GPSLongitudeRef } = exifData.value.gps;
-  if (!GPSLatitude || !GPSLongitude) return null;
+  if (!GPSLatitude || !GPSLongitude) {
+    return null;
+  }
   const lat = parseDMS(GPSLatitude);
   const lon = parseDMS(GPSLongitude);
-  if (lat === null || lon === null) return null;
+  if (lat === null || lon === null) {
+    return null;
+  }
   const latSigned = GPSLatitudeRef === 'S' ? -lat : lat;
   const lonSigned = GPSLongitudeRef === 'W' ? -lon : lon;
   return {
@@ -237,16 +278,22 @@ const exposureRows = computed<ExifRow[]>(() =>
 );
 
 const gpsRows = computed<ExifRow[]>(() => {
-  if (!exifData.value?.gps) return [];
+  if (!exifData.value?.gps) {
+    return [];
+  }
   const coordSkip = ['GPSLatitude', 'GPSLatitudeRef', 'GPSLongitude', 'GPSLongitudeRef'];
   const rows: ExifRow[] = [];
-  if (gpsCoordinates.value) rows.push({ label: 'Coordinates', value: gpsCoordinates.value.display });
+  if (gpsCoordinates.value) {
+    rows.push({ label: 'Coordinates', value: gpsCoordinates.value.display });
+  }
   rows.push(...buildRows(exifData.value.gps, GPS_LABELS, coordSkip));
   return rows;
 });
 
 async function onFileUpload(file: File) {
-  if (!file) return;
+  if (!file) {
+    return;
+  }
   loading.value = true;
   error.value = '';
   exifData.value = null;
@@ -270,7 +317,9 @@ async function onFileUpload(file: File) {
       const url = URL.createObjectURL(file);
       const img = new Image();
       img.onload = () => {
-        if (generalInfo.value) generalInfo.value.dimensions = `${img.naturalWidth} × ${img.naturalHeight} px`;
+        if (generalInfo.value) {
+          generalInfo.value.dimensions = `${img.naturalWidth} × ${img.naturalHeight} px`;
+        }
         URL.revokeObjectURL(url);
       };
       img.onerror = () => URL.revokeObjectURL(url);
@@ -286,8 +335,12 @@ async function onFileUpload(file: File) {
 }
 
 function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  }
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 </script>
@@ -309,26 +362,42 @@ function formatBytes(bytes: number): string {
       </c-alert>
       <div class="exif-section">
         <div class="section-header">
-          <image-icon class="section-icon" />
+          <ImageIcon class="section-icon" />
           <span>General Image Info</span>
         </div>
         <table class="exif-table">
           <tbody>
             <tr>
-              <td class="label-cell">File Name</td>
-              <td class="value-cell">{{ generalInfo.name }}</td>
+              <td class="label-cell">
+                File Name
+              </td>
+              <td class="value-cell">
+                {{ generalInfo.name }}
+              </td>
             </tr>
             <tr>
-              <td class="label-cell">File Size</td>
-              <td class="value-cell">{{ generalInfo.size }}</td>
+              <td class="label-cell">
+                File Size
+              </td>
+              <td class="value-cell">
+                {{ generalInfo.size }}
+              </td>
             </tr>
             <tr>
-              <td class="label-cell">MIME Type</td>
-              <td class="value-cell">{{ generalInfo.type }}</td>
+              <td class="label-cell">
+                MIME Type
+              </td>
+              <td class="value-cell">
+                {{ generalInfo.type }}
+              </td>
             </tr>
             <tr v-if="generalInfo.dimensions">
-              <td class="label-cell">Dimensions</td>
-              <td class="value-cell">{{ generalInfo.dimensions }}</td>
+              <td class="label-cell">
+                Dimensions
+              </td>
+              <td class="value-cell">
+                {{ generalInfo.dimensions }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -339,14 +408,18 @@ function formatBytes(bytes: number): string {
     <template v-if="exifData">
       <div v-if="cameraRows.length" class="exif-section">
         <div class="section-header">
-          <camera-icon class="section-icon" />
+          <CameraIcon class="section-icon" />
           <span>Camera &amp; Image</span>
         </div>
         <table class="exif-table">
           <tbody>
             <tr v-for="row in cameraRows" :key="row.label">
-              <td class="label-cell">{{ row.label }}</td>
-              <td class="value-cell">{{ row.value }}</td>
+              <td class="label-cell">
+                {{ row.label }}
+              </td>
+              <td class="value-cell">
+                {{ row.value }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -354,14 +427,18 @@ function formatBytes(bytes: number): string {
 
       <div v-if="exposureRows.length" class="exif-section">
         <div class="section-header">
-          <aperture-icon class="section-icon" />
+          <ApertureIcon class="section-icon" />
           <span>Exposure Settings</span>
         </div>
         <table class="exif-table">
           <tbody>
             <tr v-for="row in exposureRows" :key="row.label">
-              <td class="label-cell">{{ row.label }}</td>
-              <td class="value-cell">{{ row.value }}</td>
+              <td class="label-cell">
+                {{ row.label }}
+              </td>
+              <td class="value-cell">
+                {{ row.value }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -369,13 +446,15 @@ function formatBytes(bytes: number): string {
 
       <div v-if="gpsRows.length" class="exif-section">
         <div class="section-header">
-          <map-marker-icon class="section-icon" />
+          <MapMarkerIcon class="section-icon" />
           <span>GPS Location</span>
         </div>
         <table class="exif-table">
           <tbody>
             <tr v-for="row in gpsRows" :key="row.label">
-              <td class="label-cell">{{ row.label }}</td>
+              <td class="label-cell">
+                {{ row.label }}
+              </td>
               <td class="value-cell">
                 {{ row.value }}
                 <a

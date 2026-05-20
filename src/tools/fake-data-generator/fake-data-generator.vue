@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useCopy } from '@/composable/copy';
 import { dataTypes, generateFakeDataMulti } from './fake-data-generator.service';
+import { useCopy } from '@/composable/copy';
 
 const selectedTypes = ref<string[]>([dataTypes[0]!]);
 const count = ref(10);
@@ -28,12 +28,16 @@ function toggleType(type: string) {
 const rows = computed(() => {
   // eslint-disable-next-line no-unused-expressions
   refreshKey.value;
-  if (selectedTypes.value.length === 0) return [];
+  if (selectedTypes.value.length === 0) {
+    return [];
+  }
   return generateFakeDataMulti(selectedTypes.value, count.value);
 });
 
 const textOutput = computed(() => {
-  if (rows.value.length === 0) return '';
+  if (rows.value.length === 0) {
+    return '';
+  }
   const types = selectedTypes.value;
 
   if (format.value === 'json') {
@@ -62,7 +66,9 @@ const textOutput = computed(() => {
 });
 
 const htmlTableOutput = computed(() => {
-  if (rows.value.length === 0) return '';
+  if (rows.value.length === 0) {
+    return '';
+  }
   const types = selectedTypes.value;
   const thead = `<thead><tr>${types.map(t => `<th>${t}</th>`).join('')}</tr></thead>`;
   const tbody = `<tbody>${rows.value.map(row =>
@@ -78,9 +84,9 @@ const { copy } = useCopy({ source: copySource, text: 'Data copied to clipboard' 
 <template>
   <c-card>
     <div mb-1 text-sm font-semibold op-70>
-      Data types <span op-40 font-normal ml-1>(click to toggle)</span>
+      Data types <span ml-1 font-normal op-40>(click to toggle)</span>
     </div>
-    <div flex flex-wrap gap-2 mb-4>
+    <div mb-4 flex flex-wrap gap-2>
       <button
         v-for="type in dataTypes"
         :key="type"
@@ -92,9 +98,9 @@ const { copy } = useCopy({ source: copySource, text: 'Data copied to clipboard' 
       </button>
     </div>
 
-    <div flex gap-3 flex-wrap items-end mb-4>
+    <div mb-4 flex flex-wrap items-end gap-3>
       <div>
-        <div text-sm op-70 mb-1>
+        <div mb-1 text-sm op-70>
           Count
         </div>
         <n-input-number v-model:value="count" :min="1" :max="1000" w-28 />
@@ -127,10 +133,10 @@ const { copy } = useCopy({ source: copySource, text: 'Data copied to clipboard' 
 
     <!-- Text view (Plain / JSON / CSV) -->
     <template v-else>
-      <c-input-text :value="textOutput" multiline :rows="15" label="Output" readonly font-mono raw-text />
+      <c-input-text :value="textOutput" :rows="15" label="Output" multiline readonly raw-text font-mono />
     </template>
 
-    <div flex justify-center mt-3>
+    <div mt-3 flex justify-center>
       <c-button :disabled="rows.length === 0" @click="copy()">
         Copy
       </c-button>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { type CertificateInfo, decodeCertificate } from './ssl-certificate-decoder.service';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
-import { decodeCertificate, type CertificateInfo } from './ssl-certificate-decoder.service';
 
 const pemInput = ref('');
 
@@ -14,7 +14,9 @@ const validation = useValidation({
   rules: [
     {
       validator: (value) => {
-        if (!value.trim()) return true;
+        if (!value.trim()) {
+          return true;
+        }
         try {
           decodeCertificate(value);
           return true;
@@ -34,14 +36,13 @@ const validation = useValidation({
     <c-card>
       <c-input-text
         v-model:value="pemInput"
-        multiline
-        raw-text
+
         rows="8"
         label="PEM Certificate"
         :validation="validation"
         placeholder="Paste your PEM certificate here (-----BEGIN CERTIFICATE----- ...)"
-        font-mono
-        autofocus
+
+        multiline raw-text autofocus font-mono
       />
     </c-card>
 

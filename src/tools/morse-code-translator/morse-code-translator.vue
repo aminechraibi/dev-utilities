@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { morseToText, textToMorse } from './morse-code-translator.service';
 import { useCopy } from '@/composable/copy';
-import { textToMorse, morseToText } from './morse-code-translator.service';
 
 const textInput = ref('');
 const morseInput = ref('');

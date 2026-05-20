@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { decodeBase32, decodeBase32Hex, encodeBase32, encodeBase32Hex } from './base32-encoder.service';
 import { useCopy } from '@/composable/copy';
 import { withDefaultOnError } from '@/utils/defaults';
-import { encodeBase32, decodeBase32, encodeBase32Hex, decodeBase32Hex } from './base32-encoder.service';
 
 type Variant = 'standard' | 'hex';
 const variant = ref<Variant>('standard');

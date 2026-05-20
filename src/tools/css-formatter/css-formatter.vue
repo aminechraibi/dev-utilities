@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
 import { formatCss, minifyCss } from './css-formatter.service';
+import { useCopy } from '@/composable/copy';
 
 const inputCss = ref(`body {
   margin: 0;
@@ -32,8 +32,12 @@ const inputLength = computed(() => inputCss.value.length);
 const outputLength = computed(() => outputCss.value.length);
 const diff = computed(() => outputLength.value - inputLength.value);
 const diffLabel = computed(() => {
-  if (inputLength.value === 0) return '0';
-  if (diff.value === 0) return 'No change';
+  if (inputLength.value === 0) {
+    return '0';
+  }
+  if (diff.value === 0) {
+    return 'No change';
+  }
   const sign = diff.value > 0 ? '+' : '';
   const pct = ((Math.abs(diff.value) / inputLength.value) * 100).toFixed(1);
   return `${sign}${diff.value} chars (${diff.value < 0 ? '-' : '+'}${pct}%)`;
@@ -45,7 +49,7 @@ const { copy } = useCopy({ source: outputCss, text: 'CSS copied to clipboard' })
 <template>
   <div class="css-root">
     <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-      <div flex gap-4 items-center>
+      <div flex items-center gap-4>
         <span text-sm font-medium>Mode:</span>
         <n-radio-group v-model:value="mode">
           <n-space>
@@ -60,16 +64,28 @@ const { copy } = useCopy({ source: outputCss, text: 'CSS copied to clipboard' })
       </div>
       <div style="display:flex;gap:24px;margin-left:auto">
         <div text-center>
-          <div text-sm op-60>Input</div>
-          <div font-mono>{{ inputLength }} chars</div>
+          <div text-sm op-60>
+            Input
+          </div>
+          <div font-mono>
+            {{ inputLength }} chars
+          </div>
         </div>
         <div text-center>
-          <div text-sm op-60>Output</div>
-          <div font-mono>{{ outputLength }} chars</div>
+          <div text-sm op-60>
+            Output
+          </div>
+          <div font-mono>
+            {{ outputLength }} chars
+          </div>
         </div>
         <div text-center>
-          <div text-sm op-60>Difference</div>
-          <div font-mono>{{ diffLabel }}</div>
+          <div text-sm op-60>
+            Difference
+          </div>
+          <div font-mono>
+            {{ diffLabel }}
+          </div>
         </div>
       </div>
     </div>
@@ -79,10 +95,10 @@ const { copy } = useCopy({ source: outputCss, text: 'CSS copied to clipboard' })
         <c-input-text
           v-model:value="inputCss"
           placeholder="Paste your CSS here..."
-          multiline
+
           :rows="20"
-          font-mono
-          raw-text
+
+          multiline raw-text font-mono
         />
       </c-card>
 
@@ -90,13 +106,12 @@ const { copy } = useCopy({ source: outputCss, text: 'CSS copied to clipboard' })
         <c-input-text
           :value="outputCss"
           placeholder="Output will appear here..."
-          multiline
+
           :rows="20"
-          font-mono
-          readonly
-          raw-text
+
+          multiline readonly raw-text font-mono
         />
-        <div flex justify-end mt-2>
+        <div mt-2 flex justify-end>
           <c-button size="small" @click="copy()">
             Copy
           </c-button>

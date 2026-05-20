@@ -551,11 +551,13 @@ flycheck_*.el
 
 export function combineTemplates(keys: string[]): string {
   const templates = getGitignoreTemplates();
-  if (keys.length === 0) return '';
+  if (keys.length === 0) {
+    return '';
+  }
 
   const sections = keys
     .filter(k => templates[k])
     .map(k => templates[k].trimEnd());
 
-  return sections.join('\n\n') + '\n';
+  return `${sections.join('\n\n')}\n`;
 }

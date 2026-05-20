@@ -74,9 +74,15 @@ function padded(n: number, len: number): string {
   return String(n).padStart(len, '0');
 }
 
-function generateFirstName(): string { return pick(firstNames); }
-function generateLastName(): string { return pick(lastNames); }
-function generateFullName(): string { return `${pick(firstNames)} ${pick(lastNames)}`; }
+function generateFirstName(): string {
+  return pick(firstNames);
+}
+function generateLastName(): string {
+  return pick(lastNames);
+}
+function generateFullName(): string {
+  return `${pick(firstNames)} ${pick(lastNames)}`;
+}
 
 function generateEmail(): string {
   const first = pick(firstNames).toLowerCase();
@@ -97,8 +103,12 @@ function generateStreetAddress(): string {
   return `${rand(1, 9999)} ${pick(streetNames)} ${pick(streetTypes)}`;
 }
 
-function generateCity(): string { return pick(cities); }
-function generateCountry(): string { return pick(countries); }
+function generateCity(): string {
+  return pick(cities);
+}
+function generateCountry(): string {
+  return pick(countries);
+}
 
 function generateCompany(): string {
   return `${pick(companyPrefixes)} ${pick(companyNouns)}`;
@@ -108,7 +118,7 @@ function generateLorem(): string {
   const wordCount = rand(8, 16);
   const words = Array.from({ length: wordCount }, () => pick(loremWords));
   const sentence = words.join(' ');
-  return sentence.charAt(0).toUpperCase() + sentence.slice(1) + '.';
+  return `${sentence.charAt(0).toUpperCase() + sentence.slice(1)}.`;
 }
 
 function generateIPv4(): string {
@@ -122,7 +132,9 @@ function generateMAC(): string {
 function generateCreditCard(): string {
   // Generate Luhn-valid 16-digit number starting with 4 (Visa)
   const digits: number[] = [4];
-  for (let i = 0; i < 14; i++) digits.push(rand(0, 9));
+  for (let i = 0; i < 14; i++) {
+    digits.push(rand(0, 9));
+  }
 
   // Luhn check digit
   let sum = 0;
@@ -131,7 +143,9 @@ function generateCreditCard(): string {
     let d = digits[i]!;
     if (alt) {
       d *= 2;
-      if (d > 9) d -= 9;
+      if (d > 9) {
+        d -= 9;
+      }
     }
     sum += d;
     alt = !alt;
@@ -200,7 +214,9 @@ export const dataTypes = Object.keys(generators);
 
 export function generateFakeData(type: string, count: number): string[] {
   const gen = generators[type];
-  if (!gen) throw new Error(`Unknown data type: ${type}`);
+  if (!gen) {
+    throw new Error(`Unknown data type: ${type}`);
+  }
   return Array.from({ length: count }, () => gen());
 }
 
@@ -209,7 +225,9 @@ export function generateFakeDataMulti(types: string[], count: number): Record<st
     const row: Record<string, string> = {};
     for (const type of types) {
       const gen = generators[type];
-      if (gen) row[type] = gen();
+      if (gen) {
+        row[type] = gen();
+      }
     }
     return row;
   });

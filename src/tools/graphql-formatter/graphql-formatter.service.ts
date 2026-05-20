@@ -3,7 +3,9 @@
  * Works by tokenizing braces and keywords, then re-building with proper indentation.
  */
 export function formatGraphql(query: string): string {
-  if (!query.trim()) return '';
+  if (!query.trim()) {
+    return '';
+  }
 
   // Normalize line endings and strip leading/trailing whitespace
   const input = query.replace(/\r\n/g, '\n').trim();
@@ -58,14 +60,46 @@ function tokenize(input: string): Token[] {
       continue;
     }
 
-    if (ch === '{') { tokens.push({ type: 'open' }); i++; continue; }
-    if (ch === '}') { tokens.push({ type: 'close' }); i++; continue; }
-    if (ch === '(') { tokens.push({ type: 'paren_open' }); i++; continue; }
-    if (ch === ')') { tokens.push({ type: 'paren_close' }); i++; continue; }
-    if (ch === '[') { tokens.push({ type: 'bracket_open' }); i++; continue; }
-    if (ch === ']') { tokens.push({ type: 'bracket_close' }); i++; continue; }
-    if (ch === ':') { tokens.push({ type: 'colon' }); i++; continue; }
-    if (ch === ',') { tokens.push({ type: 'comma' }); i++; continue; }
+    if (ch === '{') {
+      tokens.push({ type: 'open' });
+      i++;
+      continue;
+    }
+    if (ch === '}') {
+      tokens.push({ type: 'close' });
+      i++;
+      continue;
+    }
+    if (ch === '(') {
+      tokens.push({ type: 'paren_open' });
+      i++;
+      continue;
+    }
+    if (ch === ')') {
+      tokens.push({ type: 'paren_close' });
+      i++;
+      continue;
+    }
+    if (ch === '[') {
+      tokens.push({ type: 'bracket_open' });
+      i++;
+      continue;
+    }
+    if (ch === ']') {
+      tokens.push({ type: 'bracket_close' });
+      i++;
+      continue;
+    }
+    if (ch === ':') {
+      tokens.push({ type: 'colon' });
+      i++;
+      continue;
+    }
+    if (ch === ',') {
+      tokens.push({ type: 'comma' });
+      i++;
+      continue;
+    }
 
     // Spread operator ...
     if (ch === '.' && input[i + 1] === '.' && input[i + 2] === '.') {
@@ -107,8 +141,14 @@ function tokenize(input: string): Token[] {
         let str = '"';
         i++;
         while (i < input.length && input[i] !== '"') {
-          if (input[i] === '\\') { str += input[i] + input[i + 1]; i += 2; }
-          else { str += input[i]; i++; }
+          if (input[i] === '\\') {
+            str += input[i] + input[i + 1];
+            i += 2;
+          }
+          else {
+            str += input[i];
+            i++;
+          }
         }
         str += '"';
         i++;
@@ -146,7 +186,7 @@ function buildFormatted(tokens: Token[]): string {
   function flush() {
     const trimmed = lineBuffer.trimEnd();
     if (trimmed) {
-      result += INDENT.repeat(depth) + trimmed + '\n';
+      result += `${INDENT.repeat(depth) + trimmed}\n`;
     }
     lineBuffer = '';
   }
@@ -228,7 +268,9 @@ function buildFormatted(tokens: Token[]): string {
     }
 
     if (tok.type === 'at') {
-      if (lineBuffer && !lineBuffer.endsWith(' ')) lineBuffer += ' ';
+      if (lineBuffer && !lineBuffer.endsWith(' ')) {
+        lineBuffer += ' ';
+      }
       lineBuffer += tok.value;
       continue;
     }

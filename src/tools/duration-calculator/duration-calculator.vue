@@ -2,7 +2,6 @@
 import {
   addDurations,
   formatDuration,
-  fromTotalSeconds,
   subtractDurations,
   toTotalSeconds,
 } from './duration-calculator.service';
@@ -48,7 +47,7 @@ const diffConversions = computed(() => {
 
 <template>
   <div>
-    <div flex gap-3 mb-3>
+    <div mb-3 flex gap-3>
       <c-card title="Duration A" style="flex: 1">
         <div flex gap-2>
           <n-form-item label="Hours" style="flex: 1">
@@ -61,7 +60,7 @@ const diffConversions = computed(() => {
             <n-input-number v-model:value="durationA.seconds" :min="-59" :max="59" w-full />
           </n-form-item>
         </div>
-        <div text-center font-mono text-lg op-80>
+        <div text-center text-lg font-mono op-80>
           {{ formatDuration(durationA) }}
         </div>
       </c-card>
@@ -78,30 +77,30 @@ const diffConversions = computed(() => {
             <n-input-number v-model:value="durationB.seconds" :min="-59" :max="59" w-full />
           </n-form-item>
         </div>
-        <div text-center font-mono text-lg op-80>
+        <div text-center text-lg font-mono op-80>
           {{ formatDuration(durationB) }}
         </div>
       </c-card>
     </div>
 
-    <div flex gap-3 mb-3>
+    <div mb-3 flex gap-3>
       <c-card title="A + B (Sum)" style="flex: 1">
-        <div text-center font-mono text-2xl mb-3>
+        <div mb-3 text-center text-2xl font-mono>
           {{ formatDuration(sum) }}
         </div>
         <n-divider />
-        <div v-for="item in sumConversions" :key="item.label" flex justify-between mb-1>
+        <div v-for="item in sumConversions" :key="item.label" mb-1 flex justify-between>
           <span op-70>{{ item.label }}</span>
           <span font-mono>{{ item.value }}</span>
         </div>
       </c-card>
 
       <c-card title="A - B (Difference)" style="flex: 1">
-        <div text-center font-mono text-2xl mb-3>
+        <div mb-3 text-center text-2xl font-mono>
           {{ formatDuration(diff) }}
         </div>
         <n-divider />
-        <div v-for="item in diffConversions" :key="item.label" flex justify-between mb-1>
+        <div v-for="item in diffConversions" :key="item.label" mb-1 flex justify-between>
           <span op-70>{{ item.label }}</span>
           <span font-mono>{{ item.value }}</span>
         </div>

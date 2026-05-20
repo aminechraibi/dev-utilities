@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useCopy } from '@/composable/copy';
+import { computed, ref } from 'vue';
 import { shells } from './env-vars.service';
 import type { EnvVar } from './env-vars.service';
+import { useCopy } from '@/composable/copy';
 
 let nextId = 1;
 
@@ -24,7 +24,7 @@ function removeVar(id: number) {
 
 const { copy } = useCopy({ createToast: true });
 
-function copyCmd(cmd: string) {
+function _copyCmd(cmd: string) {
   copy(cmd);
 }
 
@@ -32,7 +32,9 @@ const copiedId = ref<string | null>(null);
 function copyWithFeedback(cmd: string, feedbackKey: string) {
   copy(cmd);
   copiedId.value = feedbackKey;
-  setTimeout(() => { copiedId.value = null; }, 1400);
+  setTimeout(() => {
+    copiedId.value = null;
+  }, 1400);
 }
 
 const validVars = computed(() => vars.value.filter(v => v.key.trim()));

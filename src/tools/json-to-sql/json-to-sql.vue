@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { jsonToSql, type SqlDialect } from './json-to-sql.service';
+import { computed, ref } from 'vue';
+import { type SqlDialect, jsonToSql } from './json-to-sql.service';
 import { useCopy } from '@/composable/copy';
 
 const sampleJson = `[
@@ -36,7 +36,9 @@ const dialectOptions = [
 ];
 
 const result = computed(() => {
-  if (!jsonInput.value.trim()) return '';
+  if (!jsonInput.value.trim()) {
+    return '';
+  }
   try {
     return jsonToSql(jsonInput.value, tableName.value || 'my_table', dialect.value);
   }
@@ -51,7 +53,7 @@ const { copy } = useCopy({ source: result, text: 'SQL copied to clipboard!' });
 <template>
   <div>
     <c-card title="Input" mb-3>
-      <div flex gap-3 mb-3>
+      <div mb-3 flex gap-3>
         <c-input-text
           v-model:value="tableName"
           label="Table name"

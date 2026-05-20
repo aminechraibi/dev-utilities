@@ -1,6 +1,6 @@
 export interface MinifyOptions {
-  removeComments: boolean;
-  collapseWhitespace: boolean;
+  removeComments: boolean
+  collapseWhitespace: boolean
 }
 
 export function minifyHtml(html: string, options: MinifyOptions): string {
