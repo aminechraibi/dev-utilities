@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import _ from 'lodash';
 import {
   bytesToGB, bytesToGiB, bytesToKB, bytesToKiB, bytesToMB,
   bytesToMiB, bytesToPB, bytesToPiB, bytesToTB, bytesToTiB,
@@ -33,12 +32,11 @@ function update(key: UnitKey) {
   }
   const bytes = units[key].toBytes(value);
 
-  _.chain(units)
-    .omit(key)
-    .forEach(({ fromBytes }, k) => {
-      units[k as UnitKey].ref = fromBytes(bytes);
-    })
-    .value();
+  for (const k of Object.keys(units) as UnitKey[]) {
+    if (k !== key) {
+      units[k].ref = units[k].fromBytes(bytes);
+    }
+  }
 }
 
 update('B');

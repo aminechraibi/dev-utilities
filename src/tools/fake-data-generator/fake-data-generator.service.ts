@@ -70,7 +70,7 @@ function rand(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function padded(n: number, len: number): string {
+function padded(n: number | string, len: number): string {
   return String(n).padStart(len, '0');
 }
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { entriesToJson, entriesToShellExports, findDuplicateKeys, parseDotenv } from './dotenv-parser.service';
+import type { DotenvEntry } from './dotenv-parser.service';
 import { useCopy } from '@/composable/copy';
 
 const envInput = ref(`# App configuration
@@ -50,7 +51,7 @@ const _columns = computed(() => [
     title: 'Line',
     key: 'line',
     width: 70,
-    render: (row: ReturnType<typeof entries.value>[0]) => row.line,
+    render: (row: DotenvEntry) => row.line,
   },
   {
     title: 'Key',

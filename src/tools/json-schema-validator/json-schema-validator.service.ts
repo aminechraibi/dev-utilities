@@ -4,7 +4,8 @@ export interface ValidationResult {
 }
 
 type JsonSchema = Record<string, unknown>;
-type JsonValue = string | number | boolean | null | JsonValue[] | Record<string, JsonValue>;
+interface JsonObject { [key: string]: JsonValue }
+type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject;
 
 function getJsonType(value: JsonValue): string {
   if (value === null) {

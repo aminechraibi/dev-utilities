@@ -104,7 +104,7 @@ const detectedDelimiterLabel = computed(() => {
       <n-data-table
         :columns="columns"
         :data="tableData"
-        :row-key="row => row._key"
+        :row-key="(row: Record<string, unknown>) => String(row._key)"
         :max-height="400"
         virtual-scroll
         size="small"

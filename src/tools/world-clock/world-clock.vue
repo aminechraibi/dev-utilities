@@ -4,9 +4,13 @@ import { type TimezoneEntry, allTimezones, defaultTimezones, getTimeInZone } fro
 
 const zones = useStorage<TimezoneEntry[]>('world-clock:zones', defaultTimezones);
 const now = ref(new Date());
-useRafFn(() => {
-  now.value = new Date();
-}, { fpsLimit: 1 });
+let lastTick = 0;
+useRafFn((args) => {
+  if (args.timestamp - lastTick >= 1000) {
+    now.value = new Date();
+    lastTick = args.timestamp;
+  }
+});
 
 const addZone = ref('');
 const timezoneOptions = allTimezones.map(z => ({ label: z.replace(/_/g, ' '), value: z }));
